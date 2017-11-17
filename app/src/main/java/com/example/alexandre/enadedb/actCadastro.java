@@ -27,5 +27,6 @@ public class actCadastro extends AppCompatActivity {
     View.OnClickListener cadastrar = view -> {
         Intent LoginScreen = new Intent(actCadastro.this, MainActivity.class);
         startActivity(LoginScreen);
+        //Usuario novoUser = new Usuario();
     };
 }
