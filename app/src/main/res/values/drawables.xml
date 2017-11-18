@@ -1,0 +1,8 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="icon_gabarito" type="drawable">@drawable/gabarito_icon</item>
+    <item name="ic_menu_gallery" type="drawable">@android:drawable/ic_menu_gallery</item>
+    <item name="icon_pdf" type="drawable">@drawable/pdf_icon</item>
+    <item name="icon_resolve" type="drawable">@drawable/icon_resolve</item>
+    <item name="ic_menu_share" type="drawable">@android:drawable/ic_menu_share</item>
+    <item name="ic_menu_send" type="drawable">@android:drawable/ic_menu_send</item>
+</resources>

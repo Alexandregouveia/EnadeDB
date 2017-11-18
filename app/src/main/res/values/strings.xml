@@ -3,7 +3,6 @@
     <string name="Email">E-mail</string>
     <string name="Nome">Nome</string>
     <string name="LastName">Sobrenome</string>
-    <string name="Senha">Senha</string>
     <string name="ConfSenha">Confirmar Senha</string>
     <string name="Course">Curso</string>
     <string name="newUser">Criar usuário</string>
@@ -15,6 +14,7 @@
     <string name="confirmar">Confirmar</string>
     <string name="btAlternativas">alternativas</string>
     <string name="btProx">proxima questão</string>
+    <string name="Senha">Senha</string>
 
     <string-array name="cursos">
         <item>Bach. Sistemas de Informação</item>
@@ -50,12 +50,14 @@
                             paralímpico da história
     </string>
 
-    <string name="alt1">II, apenas.</string>
-    <string name="alt2">III, apenas.</string>
-    <string name="alt3">I e II, apenas.</string>
-    <string name="alt4">I e III, apenas.</string>
-    <string name="alt5">I, II e III.</string>
+
     <string name="title_activity_act_alternativa">actAlternativa</string>
+    <string name="title_activity_act_main_menu">actMainMenu</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 
 
 </resources>

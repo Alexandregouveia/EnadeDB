@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     View.OnClickListener CallQuestion = view -> {
-        Intent question = new Intent(MainActivity.this, actQuestao.class);
+        Intent question = new Intent(MainActivity.this, actMainMenu.class);
         startActivity(question);
     };
 

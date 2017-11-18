@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_resol"
+            android:icon="@drawable/resolve_icon"
+            android:title="Responder " />
+        <item
+            android:id="@+id/nav_gabarito"
+            android:icon="@drawable/icon_gabarito"
+            android:title="Gabarito" />
+        <item
+            android:id="@+id/nav_pdf"
+            android:icon="@drawable/pdf_icon"
+            android:title="Baixar Pdf" />
+
+
+    </group>
+
+    <item android:title="Pessoal">
+        <menu>
+            <item
+                android:id="@+id/nav_historico"
+                android:icon="@drawable/icon_historic"
+                android:title="Historico" />
+            <item
+                android:id="@+id/nav_atualizar"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Atualizar dados" />
+
+        </menu>
+    </item>
+
+</menu>
