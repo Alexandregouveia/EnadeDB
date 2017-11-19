@@ -1,5 +1,7 @@
 package com.example.alexandre.enadedb;
 
+import java.util.ArrayList;
+
 /**
  * Created by alexandre on 16/11/17.
  */
@@ -10,6 +12,8 @@ public class Usuario {
    private String email;
    private String course;
    private String instEnsino;
+   private ArrayList<Historico> historico;
+
 
 
     public Usuario(String name, String lastName, String email, String course, String instEnsino) {
@@ -18,6 +22,7 @@ public class Usuario {
         this.email = email;
         this.course = course;
         this.instEnsino = instEnsino;
+	historico = new ArrayList();
     }
 
 
@@ -59,5 +64,13 @@ public class Usuario {
 
     public void setInstEnsino(String instEnsino) {
         this.instEnsino = instEnsino;
+    }
+
+    public ArrayList<Historico> getHistorico() {
+        return historico;
+    }
+
+    public void setHistorico(ArrayList<Historico> historico) {
+        this.historico = historico;
     }
 }

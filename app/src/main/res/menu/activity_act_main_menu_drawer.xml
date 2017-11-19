@@ -5,19 +5,21 @@
 
     <group android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/nav_resol"
-            android:icon="@drawable/resolve_icon"
-            android:title="Responder " />
-        <item
-            android:id="@+id/nav_gabarito"
-            android:icon="@drawable/icon_gabarito"
-            android:title="Gabarito" />
-        <item
-            android:id="@+id/nav_pdf"
-            android:icon="@drawable/pdf_icon"
-            android:title="Baixar Pdf" />
+        <item android:title="Prova">
 
+            <item
+                android:id="@+id/nav_resol"
+                android:icon="@drawable/resolve_icon"
+                android:title="Responder " />
+            <item
+                android:id="@+id/nav_gabarito"
+                android:icon="@drawable/icon_gabarito"
+                android:title="Gabarito" />
+            <item
+                android:id="@+id/nav_pdf"
+                android:icon="@drawable/pdf_icon"
+                android:title="Baixar Pdf" />
+        </item>
 
     </group>
 
@@ -29,8 +31,13 @@
                 android:title="Historico" />
             <item
                 android:id="@+id/nav_atualizar"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/icon_person"
                 android:title="Atualizar dados" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/iconlogout"
+                android:title="Sair"/>
+
 
         </menu>
     </item>

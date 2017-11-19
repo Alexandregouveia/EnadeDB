@@ -77,9 +77,16 @@ public class actMainMenu extends AppCompatActivity
         } else if (id == R.id.nav_pdf) {
 
         } else if (id == R.id.nav_atualizar) {
+            Intent Att = new Intent(actMainMenu.this, actCadastro.class);
+            int flagUpdate =1;
+            Att.putExtra("update",1);
+            startActivity(Att);
 
         } else if (id == R.id.nav_historico) {
 
+        } else if (id == R.id.nav_logout){
+            Intent logOut = new Intent(actMainMenu.this, MainActivity.class);
+            startActivity(logOut);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
