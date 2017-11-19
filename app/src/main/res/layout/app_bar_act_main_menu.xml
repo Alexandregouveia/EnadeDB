@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context="com.example.alexandre.enadedb.actMainMenu">
 
+
+    <ViewFlipper
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/flipperv">
+
+        <include layout="@layout/content_act_main_menu" />
+        <include layout="@layout/activity_sel_test"/>
+
+
+    </ViewFlipper>
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,6 +32,5 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_act_main_menu" />
 
 </android.support.design.widget.CoordinatorLayout>

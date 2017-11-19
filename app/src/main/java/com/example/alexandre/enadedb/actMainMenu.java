@@ -10,9 +10,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.ViewFlipper;
 
 public class actMainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    ViewFlipper fpScreen;
+    Button responder;
+    Spinner ano;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +29,7 @@ public class actMainMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        fpScreen = (ViewFlipper) findViewById(R.id.flipperv);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -68,10 +76,11 @@ public class actMainMenu extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_resol) {
-            Intent quest = new Intent(actMainMenu.this, actQuestao.class);
-            startActivity(quest);
-            // Handle the camera action
+        if (id == R.id.nav_resol) { //1
+            fpScreen.setDisplayedChild(1);
+            responder = findViewById(R.id.IniciarRes);
+            responder.setOnClickListener(StartQuest);
+
         } else if (id == R.id.nav_gabarito) {
 
         } else if (id == R.id.nav_pdf) {
@@ -83,6 +92,7 @@ public class actMainMenu extends AppCompatActivity
             startActivity(Att);
 
         } else if (id == R.id.nav_historico) {
+            fpScreen.setDisplayedChild(1);
 
         } else if (id == R.id.nav_logout){
             Intent logOut = new Intent(actMainMenu.this, MainActivity.class);
@@ -93,4 +103,10 @@ public class actMainMenu extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    View.OnClickListener StartQuest = view -> {
+        Intent quest = new Intent(this, actQuestao.class);
+        startActivity(quest);
+    };
+
 }
