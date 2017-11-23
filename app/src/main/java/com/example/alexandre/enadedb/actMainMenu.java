@@ -11,8 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 public class actMainMenu extends AppCompatActivity
@@ -20,34 +22,38 @@ public class actMainMenu extends AppCompatActivity
 
     ViewFlipper fpScreen;
     Button responder;
-    Spinner ano;
+    Button Visualizar;
+    TextView Titulo;
+    Spinner spAno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_main_menu);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fpScreen = (ViewFlipper) findViewById(R.id.flipperv);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        fpScreen = findViewById(R.id.flipperv);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            fpScreen.setDisplayedChild(0);
+
         }
+
     }
 
     @Override
@@ -76,25 +82,45 @@ public class actMainMenu extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_resol) { //1
+        if (id == R.id.nav_resol) { // Resolucao de questoes
             fpScreen.setDisplayedChild(1);
+
             responder = findViewById(R.id.IniciarRes);
             responder.setOnClickListener(StartQuest);
 
-        } else if (id == R.id.nav_gabarito) {
+            spAno = findViewById(R.id.spTestyear);
+            ArrayAdapter<CharSequence> listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                    R.array.grupo_1,
+                    android.R.layout.simple_spinner_item);
+            listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spAno.setAdapter(listaAno);
 
-        } else if (id == R.id.nav_pdf) {
+        } else if (id == R.id.nav_gabarito) { // Visualizar Gabarito
+            fpScreen.setDisplayedChild(1);
+            Visualizar = findViewById(R.id.IniciarRes);
+            //Visualizar.setOnClickListener(CallGabarito);
+            Titulo = findViewById(R.id.Titulo);
+            Titulo.setText("Conferir Gabarito");
+            Visualizar.setText("visualizar");
 
-        } else if (id == R.id.nav_atualizar) {
+        } else if (id == R.id.nav_pdf) { //Baixar Pdf
+            fpScreen.setDisplayedChild(1);
+            Visualizar = findViewById(R.id.IniciarRes);
+            //Visualizar.setOnClickListener(DownloadPdf);
+            Titulo = findViewById(R.id.Titulo);
+            Titulo.setText("Download do pdf");
+            Visualizar.setText("Baixar");
+
+        } else if (id == R.id.nav_atualizar) { //Atualizar Dados pessoais
             Intent Att = new Intent(actMainMenu.this, actCadastro.class);
-            int flagUpdate =1;
             Att.putExtra("update",1);
             startActivity(Att);
 
-        } else if (id == R.id.nav_historico) {
-            fpScreen.setDisplayedChild(1);
+        } else if (id == R.id.nav_historico) { //Hitorico de partidas do usuario
+            fpScreen.setDisplayedChild(0);
+            // TODO: 22/11/17 popular listview
 
-        } else if (id == R.id.nav_logout){
+        } else if (id == R.id.nav_logout){ //Logout
             Intent logOut = new Intent(actMainMenu.this, MainActivity.class);
             startActivity(logOut);
         }

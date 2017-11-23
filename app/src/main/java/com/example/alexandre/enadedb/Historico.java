@@ -7,18 +7,18 @@ import java.util.Date;
  */
 
 public class Historico {
-    private Date data;
+    private Date test_data;
     private double score;
     private int ano;
 
     public Historico(Date data, double score, int ano) {
-        this.data = data;
+        this.test_data = data;
         this.score = score;
         this.ano = ano;
     }
 
     public Date getData() {
-        return data;
+        return test_data;
     }
 
     public double getScore() {
