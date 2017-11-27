@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="alternativa a"
+
             />
 
         <RadioButton
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="alternativa b"
+
             />
 
         <RadioButton
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="alternativa c"
+
             />
 
         <RadioButton
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="alternativa d"
+
             />
 
         <RadioButton
@@ -60,11 +60,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="alternativa e"
+
             />
     </RadioGroup>
 
     <Button
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:id="@+id/btConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

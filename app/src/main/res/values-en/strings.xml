@@ -1,2 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">EnadeDb</string>
+    <string name="Email">E-mail</string>
+    <string name="Nome">Name</string>
+    <string name="LastName">Last name</string>
+    <string name="ConfSenha">Confrim password</string>
+    <string name="Course">Course</string>
+    <string name="newUser">Create user</string>
+    <string name="Login">Enter</string>
+    <string name="cadastrar">Register</string>
+    <string name="InstEnsi">educational institution</string>
+    <string name="Exinst">educational institution</string>
+    <string name="btCadastrar">Register</string>
+    <string name="confirmar">Confirm</string>
+    <string name="btAlternativas">Alternatives</string>
+    <string name="btProx">Next question</string>
+    <string name="Senha">Password</string>
+    <string name="Galeria">Choose photo from gallery</string>
+    <string name="Camera">Take a photo</string>
+    <string name="historico">Your last matches</string>
+    <string name="endGame">You end the questions</string>
+    <string name="score">you hit:</string>
+    <string name="Menu">Main Menu</string>
+    <string name="update">Update informations</string>
+    <string name="btupdate">Update</string>
+</resources>

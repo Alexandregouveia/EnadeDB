@@ -23,6 +23,14 @@ public class actQuestao extends AppCompatActivity {
         btAlternativa.setOnClickListener(CallAlt);
     }
 
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        Intent retorno = new Intent(actQuestao.this,actMainMenu.class);
+        startActivity(retorno);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent Data){
         super.onActivityResult(requestCode,resultCode, Data);

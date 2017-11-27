@@ -1,12 +1,19 @@
 package com.example.alexandre.enadedb;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.icu.util.Calendar;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,19 +38,28 @@ import static android.media.MediaRecorder.VideoSource.CAMERA;
 
 public class actCadastro extends AppCompatActivity {
 
-    public static final int PICK_IMAGE=1;
+    File file;
+    Uri imguri;
     EditText ImpEmail;
     TextView titulo;
     Button Cadastrar;
     ImageButton btFoto;
-
+    Bundle extras;
     int flag = 0;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_cadastro);
+
+        //Checa permissão para acesar a camera
+        int permission = ContextCompat.checkSelfPermission(actCadastro.this, Manifest.permission.CAMERA);
+        if (permission == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(actCadastro.this,new String[]{Manifest.permission.CAMERA},1);
+        }
+
+
 
         ImpEmail = findViewById(R.id.ImpEmail);
         titulo = findViewById(R.id.Atualizar);
@@ -58,30 +74,56 @@ public class actCadastro extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpCursos.setAdapter(adapter);
 
+        
         //Reaproveita a tela de cadastro para atualizar os dados
 
         flag = getIntent().getIntExtra("update",0);
         if (flag == 1){
-            titulo.setText("Atualizar informações");
+            titulo.setText(R.string.update);
             ImpEmail.setFocusable(false);
-            Cadastrar.setText("Atualizar");
+            Cadastrar.setText(R.string.btupdate);
             Cadastrar.setOnClickListener(AtualizarDados);
         }
 
     }
 
     @Override
-    protected void onActivityResult(int requsetCode, int resultCode, Intent data){
-        if (requsetCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK ){
-            Bundle extras = data.getExtras();
-            Bitmap foto = (Bitmap) extras.get("data");
-            btFoto.setImageBitmap(foto);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (imguri != null) {
+            outState.putString("cameraImageUri", imguri.toString());
+        }
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState.containsKey("cameraImageUri")) {
+            imguri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode== 0 && resultCode == RESULT_OK){
+            cropImg();
+        }else if (requestCode==2){
+            if (data !=null){
+                imguri = data.getData();
+                cropImg();
+            }
+        }
+        else if (requestCode==1){
+            if (data !=null){
+                Bundle img = data.getExtras();
+                Bitmap image = img.getParcelable("data");
+                btFoto.setImageBitmap(image);
+            }
         }
     }
 
     View.OnClickListener TirarFoto = view ->{
-      showPictureDialog();
+        takePhotoFromCamera();
     };
 
     View.OnClickListener AtualizarDados = view -> {
@@ -95,39 +137,36 @@ public class actCadastro extends AppCompatActivity {
         //Usuario novoUser = new Usuario();
     };
 
-    private void showPictureDialog(){
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {
-                getString(R.string.Galeria),
-                getString(R.string.Camera )};
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                choosePhotoFromGallary();
-                                break;
-                            case 1:
-                                takePhotoFromCamera();
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
-    }
+
 
     private void takePhotoFromCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
+        Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        file = new File(Environment.getExternalStorageDirectory(),
+                "file"+String.valueOf(System.currentTimeMillis())+".jpg");
+        imguri = Uri.fromFile(file);
+        camIntent.putExtra(MediaStore.EXTRA_OUTPUT,imguri);
+        camIntent.putExtra("return-data",true);
+        startActivityForResult(camIntent,0);
     }
 
-    public void choosePhotoFromGallary() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        startActivityForResult(galleryIntent, PICK_IMAGE);
+    private void cropImg(){
+
+        try{
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            cropIntent.setDataAndType(imguri,"image/*");
+
+            cropIntent.putExtra("crop","true");
+            cropIntent.putExtra("outputX",140);
+            cropIntent.putExtra("outputY",140);
+            cropIntent.putExtra("aspectX",3);
+            cropIntent.putExtra("aspectY",4);
+            cropIntent.putExtra("scaleUpIfNeeded",true);
+            cropIntent.putExtra("return-data",true);
+            startActivityForResult(cropIntent,1);
+        }catch (ActivityNotFoundException e){
+
+        }
     }
 
 
