@@ -41,6 +41,10 @@ public class actCadastro extends AppCompatActivity {
     File file;
     Uri imguri;
     EditText ImpEmail;
+    EditText ImpName;
+    EditText ImpLastName;
+    EditText ImpInstEnsino;
+    Spinner SpCursos;
     TextView titulo;
     Button Cadastrar;
     ImageButton btFoto;
@@ -60,15 +64,18 @@ public class actCadastro extends AppCompatActivity {
         }
 
 
-
+        ImpName = findViewById(R.id.ImpName);
+        ImpLastName = findViewById(R.id.ImpLastName);
+        ImpInstEnsino = findViewById(R.id.ImpEnsino);
         ImpEmail = findViewById(R.id.ImpEmail);
         titulo = findViewById(R.id.Atualizar);
+
         Cadastrar = findViewById(R.id.btCadastrar);
         Cadastrar.setOnClickListener(cadastrar);
         btFoto = findViewById(R.id.btFoto);
         btFoto.setOnClickListener(TirarFoto);
 
-        Spinner SpCursos = findViewById(R.id.spCursos);
+        SpCursos = findViewById(R.id.spCursos);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),
                 R.array.cursos, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -134,7 +141,14 @@ public class actCadastro extends AppCompatActivity {
     View.OnClickListener cadastrar = view -> {
         Intent LoginScreen = new Intent(actCadastro.this, MainActivity.class);
         startActivity(LoginScreen);
-        //Usuario novoUser = new Usuario();
+        Usuario user = new Usuario(ImpName.getText().toString(),
+                                   ImpLastName.getText().toString(),
+                                   ImpEmail.getText().toString(),
+                                   ImpInstEnsino.getText().toString(),
+                                   SpCursos.getSelectedItem().toString(),
+                                   null
+                                   );
+        Toast.makeText(this, user.getName() + " " + user.getLastName(), Toast.LENGTH_SHORT).show();
     };
 
 

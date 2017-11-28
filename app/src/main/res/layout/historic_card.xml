@@ -23,7 +23,7 @@
             android:id="@+id/hist_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" Data: 22/11/2017"
+            android:text=" "
             android:textSize="18sp"
             android:background="@color/background"
             android:gravity="center"/>
@@ -32,7 +32,7 @@
             android:id="@+id/hist_test_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" Ano da prova: 2005 "
+            android:text=" "
             android:textSize="18sp"
             android:background="@color/background"
             android:gravity="center"/>

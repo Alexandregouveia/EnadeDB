@@ -16,5 +16,18 @@ public class actScore extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_score);
 
+        Button MainM = findViewById(R.id.btMain);
+        MainM.setOnClickListener(CallMainMenu);
+
     }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
+
+    View.OnClickListener CallMainMenu = view -> {
+        Intent mScreen = new Intent(actScore.this,actMainMenu.class);
+        startActivity(mScreen);
+    };
 }

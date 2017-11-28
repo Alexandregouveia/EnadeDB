@@ -26,13 +26,17 @@ public class actAlternativa extends AppCompatActivity {
 
     View.OnClickListener ConfAlternativa = view -> {
         AltSelecionada = findViewById(Alternativas.getCheckedRadioButtonId());
-        String Letra = AltSelecionada.getTag().toString();
-        String texto = AltSelecionada.getText().toString();
-        Toast.makeText(this, Letra, Toast.LENGTH_SHORT).show();
-        Intent Retorno = new Intent(actAlternativa.this, actQuestao.class);
-        Retorno.putExtra("Resultado",Letra);
-        Retorno.putExtra("Texto",texto);
-        setResult(RESULT_OK,Retorno);
-        finish();
+        if (AltSelecionada ==null){
+            Toast.makeText(this, "Escolha uma alternativa", Toast.LENGTH_SHORT).show();
+        }else {
+            String Letra = AltSelecionada.getTag().toString();
+            String texto = AltSelecionada.getText().toString();
+            Toast.makeText(this, Letra, Toast.LENGTH_SHORT).show();
+            Intent Retorno = new Intent(actAlternativa.this, actQuestao.class);
+            Retorno.putExtra("Resultado", Letra);
+            Retorno.putExtra("Texto", texto);
+            setResult(RESULT_OK, Retorno);
+            finish();
+        }
     };
 }

@@ -1,5 +1,7 @@
 package com.example.alexandre.enadedb;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -7,15 +9,24 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import android.widget.BaseAdapter;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class actMainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -25,6 +36,8 @@ public class actMainMenu extends AppCompatActivity
     Button Visualizar;
     TextView Titulo;
     Spinner spAno;
+    ArrayList<Historico> listH = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +55,9 @@ public class actMainMenu extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        showPopUp();
+
     }
 
     @Override
@@ -118,7 +134,7 @@ public class actMainMenu extends AppCompatActivity
 
         } else if (id == R.id.nav_historico) { //Hitorico de partidas do usuario
             fpScreen.setDisplayedChild(0);
-            // TODO: 22/11/17 popular listview
+
 
         } else if (id == R.id.nav_logout){ //Logout
             Intent logOut = new Intent(actMainMenu.this, MainActivity.class);
@@ -134,5 +150,80 @@ public class actMainMenu extends AppCompatActivity
         Intent quest = new Intent(this, actQuestao.class);
         startActivity(quest);
     };
+
+
+    static class ViewHolder{
+        TextView score;
+        TextView date;
+        TextView testDate;
+    }
+
+    public class cardAdapter extends BaseAdapter{
+        private ArrayList<Historico> listaHist = listH;
+        private LayoutInflater layoutInflater;
+
+        public cardAdapter(Context context, ArrayList<Historico> arraylist){
+            listaHist = arraylist;
+            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount(){
+            return listaHist.size();
+        }
+
+        @Override
+        public Historico getItem(int i){
+            return listaHist.get(i);
+        }
+
+        @Override
+        public long getItemId(int i){
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View view, ViewGroup parent){
+            ViewHolder viewHolder;
+
+            if (view==null){
+                viewHolder = new ViewHolder();
+
+                view = layoutInflater.inflate(R.layout.historic_card, parent, false);
+                viewHolder.score = view.findViewById(R.id.hist_score);
+                viewHolder.date = view.findViewById(R.id.hist_date);
+                viewHolder.testDate = view.findViewById(R.id.hist_test_date);
+                view.setTag(viewHolder);
+
+            }else{
+                viewHolder = (ViewHolder) view.getTag();
+            }
+
+
+            Historico hist = getItem(position);
+            if (hist!=null){
+                viewHolder.testDate.setText(String.valueOf(hist.getAno()));
+                viewHolder.date.setText(hist.getData().toString());
+                viewHolder.score.setText(String.valueOf(hist.getScore()));
+            }
+
+            return view;
+        }
+
+
+
+    }
+    public void showPopUp(){
+        int numberItems = 10;
+        ArrayList<Historico> hist= new ArrayList<>();
+
+        for (int x = 0; x<numberItems; x++){
+            hist.add(new Historico(new Date(2017,11,28),90,2005));
+        }
+
+        ListView listaH = findViewById(R.id.ListHistoric);
+        listaH.setAdapter(new cardAdapter(actMainMenu.this,hist));
+
+    }
 
 }

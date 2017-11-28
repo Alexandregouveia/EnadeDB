@@ -21,14 +21,14 @@ public class actQuestao extends AppCompatActivity {
         btAlternativa = findViewById(R.id.btAlternativas);
         btProxima = findViewById(R.id.btProx);
         btAlternativa.setOnClickListener(CallAlt);
+        btProxima.setOnClickListener(CallNext);
     }
 
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
-        Intent retorno = new Intent(actQuestao.this,actMainMenu.class);
-        startActivity(retorno);
+//       super.onBackPressed();
+
     }
 
     @Override
@@ -42,9 +42,13 @@ public class actQuestao extends AppCompatActivity {
     }
 
     View.OnClickListener CallAlt = view -> {
-        Toast.makeText(this, "Aqui funciona", Toast.LENGTH_SHORT).show();
         Intent alt = new Intent(actQuestao.this, actAlternativa.class);
         startActivityForResult(alt,0);
+    };
+
+    View.OnClickListener CallNext = view -> {
+        Intent next = new Intent(actQuestao.this,actScore.class);
+        startActivity(next);
     };
 
 }
