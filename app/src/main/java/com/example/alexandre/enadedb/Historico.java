@@ -1,5 +1,6 @@
 package com.example.alexandre.enadedb;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -7,25 +8,38 @@ import java.util.Date;
  */
 
 public class Historico {
-    private Date test_data;
-    private double score;
+    private String test_data;
+    private int score;
     private int ano;
 
-    public Historico(Date data, double score, int ano) {
-        this.test_data = data;
+
+    public Historico(String test_data, int score, int ano) {
+        this.test_data = test_data;
         this.score = score;
         this.ano = ano;
     }
 
-    public Date getData() {
+    public String getTest_data() {
         return test_data;
+    }
+
+    public void setTest_data(String test_data) {
+        this.test_data = test_data;
     }
 
     public double getScore() {
         return score;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public int getAno() {
         return ano;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
     }
 }

@@ -3,6 +3,7 @@ package com.example.alexandre.enadedb;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,8 +26,11 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.widget.BaseAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static java.lang.String.valueOf;
 
 public class actMainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -202,9 +206,17 @@ public class actMainMenu extends AppCompatActivity
 
             Historico hist = getItem(position);
             if (hist!=null){
-                viewHolder.testDate.setText(String.valueOf(hist.getAno()));
-                viewHolder.date.setText(hist.getData().toString());
-                viewHolder.score.setText(String.valueOf(hist.getScore()));
+                viewHolder.testDate.setText(getString(R.string.card1) +" "+ valueOf(hist.getAno()));
+                viewHolder.date.setText(getString(R.string.card2)+" "+ hist.getTest_data());
+                if (hist.getScore()<50){
+                    viewHolder.score.setTextColor(getColor(R.color.low));
+                }else if (hist.getScore()>=50 && hist.getScore()<70){
+                    viewHolder.score.setTextColor(getColor(R.color.medium));
+                }else {
+                    viewHolder.score.setTextColor(getColor(R.color.high));
+                }
+                viewHolder.score.setText(valueOf(hist.getScore()));
+
             }
 
             return view;
@@ -218,7 +230,7 @@ public class actMainMenu extends AppCompatActivity
         ArrayList<Historico> hist= new ArrayList<>();
 
         for (int x = 0; x<numberItems; x++){
-            hist.add(new Historico(new Date(2017,11,28),90,2005));
+            hist.add(new Historico(new SimpleDateFormat("dd/MM/yyyy").format(new Date().getTime()),60,2005));
         }
 
         ListView listaH = findViewById(R.id.ListHistoric);

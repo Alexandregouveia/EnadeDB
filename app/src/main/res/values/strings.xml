@@ -20,6 +20,8 @@
     <string name="historico">Suas ultimas partidas</string>
     <string name="endGame">Você terminou as questões</string>
     <string name="score">Você acertou:</string>
+    <string name="card1">Ano da prova: </string>
+    <string name="card2">"Respondida em: "</string>
 
     <string-array name="cursos">
         <item>Bach. Sistemas de Informação</item>

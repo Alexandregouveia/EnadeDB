@@ -28,6 +28,8 @@ public class actQuestao extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 //       super.onBackPressed();
+        Intent mainScreen = new Intent(actQuestao.this,actMainMenu.class);
+        startActivity(mainScreen);
 
     }
 

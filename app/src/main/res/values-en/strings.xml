@@ -24,4 +24,6 @@
     <string name="Menu">Main Menu</string>
     <string name="update">Update informations</string>
     <string name="btupdate">Update</string>
+    <string name="card1">Year of test:</string>
+    <string name="card2">Answered in:</string>
 </resources>

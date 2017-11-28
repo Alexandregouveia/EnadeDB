@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     View.OnClickListener CreateUser = view -> {
       Intent CreateUser  =new Intent(MainActivity.this, actCadastro.class);
-      Log.i("Botao pressionado","Aqui");
       startActivity(CreateUser);
     };
 
@@ -33,5 +32,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(question);
     };
 
-
+    @Override
+    public void onBackPressed() {
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.runFinalizersOnExit(true);
+    }
 }
