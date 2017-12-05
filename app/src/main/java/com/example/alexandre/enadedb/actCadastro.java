@@ -3,23 +3,23 @@ package com.example.alexandre.enadedb;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.icu.util.Calendar;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,48 +27,61 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Password;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-
-import static android.media.MediaRecorder.VideoSource.CAMERA;
-
+import java.util.List;
 
 
-public class actCadastro extends AppCompatActivity {
+public class actCadastro extends AppCompatActivity implements Validator.ValidationListener{
 
     File file;
     Uri imguri;
+
+    @Email
     EditText ImpEmail;
+    @NotEmpty
     EditText ImpName;
+    @NotEmpty
     EditText ImpLastName;
+    @NonNull
     EditText ImpInstEnsino;
+
+    @Length(min=6)
+    @Password
+    EditText ImpPass;
+    @NonNull
+    @ConfirmPassword
+    EditText ImpConfPass;
+
     Spinner SpCursos;
     TextView titulo;
     Button Cadastrar;
     ImageButton btFoto;
-    Bundle extras;
+
     int flag = 0;
 
+    private Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_cadastro);
 
-        //Checa permissão para acesar a camera
-        int permission = ContextCompat.checkSelfPermission(actCadastro.this, Manifest.permission.CAMERA);
-        if (permission == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(actCadastro.this,new String[]{Manifest.permission.CAMERA},1);
-        }
-
-
         ImpName = findViewById(R.id.ImpName);
         ImpLastName = findViewById(R.id.ImpLastName);
         ImpInstEnsino = findViewById(R.id.ImpEnsino);
         ImpEmail = findViewById(R.id.ImpEmail);
         titulo = findViewById(R.id.Atualizar);
+        ImpPass = findViewById(R.id.ImpPass);
+        ImpConfPass = findViewById(R.id.ImpConfPass);
 
         Cadastrar = findViewById(R.id.btCadastrar);
         Cadastrar.setOnClickListener(cadastrar);
@@ -80,6 +93,7 @@ public class actCadastro extends AppCompatActivity {
                 R.array.cursos, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpCursos.setAdapter(adapter);
+        SpCursos.setSelection(0);
 
         
         //Reaproveita a tela de cadastro para atualizar os dados
@@ -92,7 +106,43 @@ public class actCadastro extends AppCompatActivity {
             Cadastrar.setOnClickListener(AtualizarDados);
         }
 
+        //Checa permissão para acesar a camera
+        int permission = ContextCompat.checkSelfPermission(actCadastro.this, Manifest.permission.CAMERA);
+        if (permission == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(actCadastro.this,new String[]{Manifest.permission.CAMERA},1);
+        }
+        //Checa permissão para acessar dados do dispositivo
+        int permissionStorage = ContextCompat.checkSelfPermission(actCadastro.this,Manifest.permission_group.STORAGE);
+        if (permission==PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(actCadastro.this,new String[]{Manifest.permission_group.STORAGE},3);
+        }
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
     }
+
+        @Override
+        public void onValidationSucceeded() {
+            Cadastrar();
+
+        }
+
+        @Override
+        public void onValidationFailed(List<ValidationError> errors) {
+            for (ValidationError error : errors) {
+                View view = error.getView();
+                String message = error.getCollatedErrorMessage(getApplicationContext());
+
+                // Display error messages ;)
+                if (view instanceof EditText) {
+                    ((EditText) view).setError(message);
+                } else {
+                    Toast.makeText(actCadastro.this, "Sem ideia", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -113,6 +163,7 @@ public class actCadastro extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode== 0 && resultCode == RESULT_OK){
+
             cropImg();
         }else if (requestCode==2){
             if (data !=null){
@@ -122,9 +173,14 @@ public class actCadastro extends AppCompatActivity {
         }
         else if (requestCode==1){
             if (data !=null){
-                Bundle img = data.getExtras();
-                Bitmap image = img.getParcelable("data");
-                btFoto.setImageBitmap(image);
+                Uri imageUri = data.getData();
+                try {
+                    Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageUri);
+                    btFoto.setImageBitmap(image);
+                } catch (IOException ex){
+
+                }
+
             }
         }
     }
@@ -139,25 +195,30 @@ public class actCadastro extends AppCompatActivity {
     };
 
     View.OnClickListener cadastrar = view -> {
+
+        validator.validate();
+    };
+
+    private void Cadastrar(){
         Intent LoginScreen = new Intent(actCadastro.this, MainActivity.class);
         startActivity(LoginScreen);
         Usuario user = new Usuario(ImpName.getText().toString(),
-                                   ImpLastName.getText().toString(),
-                                   ImpEmail.getText().toString(),
-                                   ImpInstEnsino.getText().toString(),
-                                   SpCursos.getSelectedItem().toString(),
-                                   null
-                                   );
-        Toast.makeText(this, user.getName() + " " + user.getLastName(), Toast.LENGTH_SHORT).show();
-    };
-
-
+                ImpLastName.getText().toString(),
+                ImpEmail.getText().toString(),
+                ImpInstEnsino.getText().toString(),
+                SpCursos.getSelectedItem().toString(),
+                null
+        );
+        //Toast.makeText(this, user.getInstensino(), Toast.LENGTH_SHORT).show();
+    }
 
     private void takePhotoFromCamera() {
         Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        file = new File(Environment.getExternalStorageDirectory(),
-                "file"+String.valueOf(System.currentTimeMillis())+".jpg");
-        imguri = Uri.fromFile(file);
+        file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                "EnadeDb"+String.valueOf(System.currentTimeMillis())+".jpg");
+
+        String authoroty = getApplicationContext().getPackageName() +".fileprovider";
+        imguri = FileProvider.getUriForFile(this,authoroty,file);
         camIntent.putExtra(MediaStore.EXTRA_OUTPUT,imguri);
         camIntent.putExtra("return-data",true);
         startActivityForResult(camIntent,0);
@@ -170,18 +231,22 @@ public class actCadastro extends AppCompatActivity {
             Intent cropIntent = new Intent("com.android.camera.action.CROP");
             cropIntent.setDataAndType(imguri,"image/*");
 
+            cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             cropIntent.putExtra("crop","true");
             cropIntent.putExtra("outputX",140);
-            cropIntent.putExtra("outputY",140);
+            cropIntent.putExtra("outputY",160);
             cropIntent.putExtra("aspectX",3);
             cropIntent.putExtra("aspectY",4);
             cropIntent.putExtra("scaleUpIfNeeded",true);
             cropIntent.putExtra("return-data",true);
+            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT,imguri);
             startActivityForResult(cropIntent,1);
         }catch (ActivityNotFoundException e){
 
         }
     }
+
 
 
 }

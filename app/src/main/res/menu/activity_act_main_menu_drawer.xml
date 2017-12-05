@@ -5,21 +5,23 @@
 
     <group android:checkableBehavior="single">
 
-        <item android:title="Prova">
-
+        <item android:title="Provas">
+            <menu>
             <item
                 android:id="@+id/nav_resol"
                 android:icon="@drawable/resolve_icon"
-                android:title="Responder " />
+                android:title="@string/Responder" />
             <item
                 android:id="@+id/nav_gabarito"
                 android:icon="@drawable/icon_gabarito"
-                android:title="Gabarito" />
+                android:title="@string/Gabarito" />
             <item
                 android:id="@+id/nav_pdf"
                 android:icon="@drawable/pdf_icon"
-                android:title="Baixar Pdf" />
+                android:title="@string/pdf" />
+            </menu>
         </item>
+
 
     </group>
 
@@ -28,15 +30,15 @@
             <item
                 android:id="@+id/nav_historico"
                 android:icon="@drawable/icon_historic"
-                android:title="Historico" />
+                android:title="@string/Histórico" />
             <item
                 android:id="@+id/nav_atualizar"
                 android:icon="@drawable/icon_person"
-                android:title="Atualizar dados" />
+                android:title="@string/atualizar" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/iconlogout"
-                android:title="Sair"/>
+                android:title="@string/Sair"/>
 
 
         </menu>

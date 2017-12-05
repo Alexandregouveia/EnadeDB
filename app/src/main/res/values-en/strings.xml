@@ -26,4 +26,12 @@
     <string name="btupdate">Update</string>
     <string name="card1">Year of test:</string>
     <string name="card2">Answered in:</string>
+    <string name="hintPass">Password  (min 6 letters/digits)</string>
+    <string name="prova">Test</string>
+    <string name="Gabarito">Proof template</string>
+    <string name="atualizar">Update user data</string>
+    <string name="pdf">Download PDF</string>
+    <string name="Responder">Resolve</string>
+    <string name="Histórico">Historic</string>
+    <string name="Sair">Exit</string>
 </resources>

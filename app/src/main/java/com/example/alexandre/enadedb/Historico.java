@@ -27,7 +27,7 @@ public class Historico {
         this.test_data = test_data;
     }
 
-    public double getScore() {
+    public int getScore() {
         return score;
     }
 

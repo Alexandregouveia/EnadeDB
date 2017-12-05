@@ -24,9 +24,10 @@
     <string name="card2">"Respondida em: "</string>
 
     <string-array name="cursos">
-        <item>Bach. Sistemas de Informação</item>
-        <item>Bach. Ciência da Computação</item>
-        <item>Eng. computação</item>
+        <item>Curso</item>
+        <item>Bach Sistemas de Informação</item>
+        <item>Bach Ciência da Computação</item>
+        <item>Eng computação</item>
     </string-array>
 
     <string-array name="grupo_1">
@@ -90,6 +91,14 @@
     <string name="Menu">Menu principal</string>
     <string name="update">Atualizar informações</string>
     <string name="btupdate">Atualizar</string>
+    <string name="hintPass">Senha (minimo 6 letras/digitos)</string>
+    <string name="prova">Prova</string>
+    <string name="Gabarito">Gabarito</string>
+    <string name="atualizar">Atualizar dados</string>
+    <string name="pdf">Baixar PDF</string>
+    <string name="Responder">Responder</string>
+    <string name="Histórico">Histórico</string>
+    <string name="Sair">Sair</string>
 
 
 </resources>
