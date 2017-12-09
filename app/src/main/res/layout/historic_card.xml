@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="90"
+        android:layout_margin="2dp"
         android:textSize="36sp"
         android:textColor="#ff0000"
         android:background="@color/background"/>
@@ -23,7 +24,9 @@
             android:id="@+id/hist_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" "
+            android:text="Respondida em: "
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:textSize="18sp"
             android:background="@color/background"
             android:gravity="center"/>
@@ -32,7 +35,8 @@
             android:id="@+id/hist_test_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" "
+            android:text="ano: "
+            android:padding="2dp"
             android:textSize="18sp"
             android:background="@color/background"
             android:gravity="center"/>

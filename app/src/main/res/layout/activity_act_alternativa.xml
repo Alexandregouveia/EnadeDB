@@ -31,7 +31,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableRight=""
                     android:tag="alta"
                     android:text="a"
 
@@ -42,7 +41,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableRight=""
                     android:tag="altb"
                     android:text="b"
 
@@ -53,7 +51,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableRight=""
                     android:tag="altc"
                     android:text="c"
 
@@ -64,7 +61,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableRight=""
                     android:tag="altd"
                     android:text="d"
 
@@ -75,7 +71,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableRight=""
                     android:tag="alte"
                     android:text="e"
 

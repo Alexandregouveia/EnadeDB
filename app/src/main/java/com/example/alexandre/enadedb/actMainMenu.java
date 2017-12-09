@@ -122,6 +122,7 @@ public class actMainMenu extends AppCompatActivity
             Titulo = findViewById(R.id.Titulo);
             Titulo.setText("Conferir Gabarito");
             Visualizar.setText("visualizar");
+            Visualizar.setOnClickListener(CallGabarito);
 
         } else if (id == R.id.nav_pdf) { //Baixar Pdf
             fpScreen.setDisplayedChild(1);
@@ -215,7 +216,7 @@ public class actMainMenu extends AppCompatActivity
                 }else {
                     viewHolder.score.setTextColor(getColor(R.color.high));
                 }
-                viewHolder.score.setText(valueOf(hist.getScore()));
+                viewHolder.score.setText(" "+valueOf(hist.getScore())+" ");
 
             }
 
@@ -237,5 +238,10 @@ public class actMainMenu extends AppCompatActivity
         listaH.setAdapter(new cardAdapter(actMainMenu.this,hist));
 
     }
+
+    View.OnClickListener CallGabarito = view -> {
+      Intent gab = new Intent(actMainMenu.this, actGabarito.class);
+      startActivity(gab);
+    };
 
 }

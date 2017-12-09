@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "472541258482",
+    "firebase_url": "https://enadedb.firebaseio.com",
+    "project_id": "enadedb",
+    "storage_bucket": "enadedb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:472541258482:android:0d16e219c02b7c19",
+        "android_client_info": {
+          "package_name": "com.example.alexandre.enadedb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "472541258482-3dc1b059ef86ug2m7tdjskncq7m8mrkj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alexandre.enadedb",
+            "certificate_hash": "74b1ede1b900ce824fe1c58beef9bc0278955a0c"
+          }
+        },
+        {
+          "client_id": "472541258482-f33rdj47at31qa3bdlb82fl1j8p2ip8j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlqBcw0cZhbE5g85F1diLJXVD-dFS4lkw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "472541258482-f33rdj47at31qa3bdlb82fl1j8p2ip8j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

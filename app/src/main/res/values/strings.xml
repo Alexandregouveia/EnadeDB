@@ -99,6 +99,8 @@
     <string name="Responder">Responder</string>
     <string name="Histórico">Histórico</string>
     <string name="Sair">Sair</string>
+    <string name="pessoal">Pessoal</string>
+    <string name="provas">Provas</string>
 
 
 </resources>

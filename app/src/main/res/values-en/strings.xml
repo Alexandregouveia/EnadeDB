@@ -34,4 +34,6 @@
     <string name="Responder">Resolve</string>
     <string name="Histórico">Historic</string>
     <string name="Sair">Exit</string>
+    <string name="pessoal">Personal</string>
+    <string name="provas">Tests</string>
 </resources>
