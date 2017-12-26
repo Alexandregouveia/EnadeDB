@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -27,6 +29,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
@@ -44,6 +53,9 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
 
     File file;
     Uri imguri;
+
+
+
 
     @Email
     EditText ImpEmail;
@@ -69,6 +81,8 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
     int flag = 0;
 
     private Validator validator;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +108,8 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpCursos.setAdapter(adapter);
         SpCursos.setSelection(0);
+
+        mAuth = FirebaseAuth.getInstance();
 
         
         //Reaproveita a tela de cadastro para atualizar os dados
@@ -199,16 +215,35 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
         validator.validate();
     };
 
+
+
+
+
     private void Cadastrar(){
         Intent LoginScreen = new Intent(actCadastro.this, MainActivity.class);
         startActivity(LoginScreen);
-        Usuario user = new Usuario(ImpName.getText().toString(),
-                ImpLastName.getText().toString(),
-                ImpEmail.getText().toString(),
-                ImpInstEnsino.getText().toString(),
-                SpCursos.getSelectedItem().toString(),
-                null
-        );
+        mAuth.createUserWithEmailAndPassword(ImpEmail.getText().toString(),ImpPass.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                            FirebaseUser newUser = task.getResult().getUser();
+                            mDatabase = FirebaseDatabase.getInstance();
+                            DatabaseReference mRef = mDatabase.getReference("users");
+                            Usuario user = new Usuario(ImpName.getText().toString(),
+                                    ImpLastName.getText().toString(),
+                                    ImpInstEnsino.getText().toString(),
+                                    SpCursos.getSelectedItem().toString(),
+                                    newUser.getUid()+"/"+file.getName()
+
+                            );
+
+                            mRef.child(newUser.getUid()).setValue(user);
+                        }
+
+                });
+
+
+
         //Toast.makeText(this, user.getInstensino(), Toast.LENGTH_SHORT).show();
     }
 
