@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -38,6 +39,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -76,16 +78,20 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
     @NonNull
     @ConfirmPassword
     EditText ImpConfPass;
+    @NonNull
+    ImageButton btFoto;
 
     Spinner SpCursos;
     TextView titulo;
     Button Cadastrar;
-    ImageButton btFoto;
+
 
     int flag = 0;
+    File photos;
 
     private Validator validator;
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private DatabaseReference mRef;
     private FirebaseStorage mStorage;
     private StorageReference mStorageRef;
@@ -126,6 +132,53 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
             ImpEmail.setFocusable(false);
             Cadastrar.setText(R.string.btupdate);
             Cadastrar.setOnClickListener(AtualizarDados);
+            ImpPass.setFocusable(false);
+            ImpConfPass.setFocusable(false);
+
+            mAuth = FirebaseAuth.getInstance();
+            mUser = mAuth.getCurrentUser();
+            mRef = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
+            mRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                    ImpName.setText(usuario.getName());
+                    ImpLastName.setText(usuario.getLastName());
+                    ImpEmail.setText(mUser.getEmail());
+                    ImpInstEnsino.setText(usuario.getInstensino());
+                    switch (usuario.getCurso()){
+                        case "Bach Sistemas de Informação":
+                            SpCursos.setSelection(1);
+                            break;
+                        case "Bach Ciência da Computação":
+                            SpCursos.setSelection(2);
+                            break;
+                        case "Eng computação":
+                            SpCursos.setSelection(3);
+                            break;
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            try{
+                photos = File.createTempFile("photo","jpg");
+            }catch (Exception ex){}
+            mStorage = FirebaseStorage.getInstance();
+            mStorageRef = mStorage.getReference("photos/"+mUser.getUid()+"/enadedb.jpg");
+            mStorageRef.getFile(photos)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap img = BitmapFactory.decodeFile(photos.toString());
+                            btFoto.setImageBitmap(img);
+                        }
+                    });
         }
 
         //Checa permissão para acesar a camera
@@ -212,6 +265,21 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
     };
 
     View.OnClickListener AtualizarDados = view -> {
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        Usuario usuario = new Usuario(ImpName.getText().toString(),
+                ImpLastName.getText().toString(),
+                ImpInstEnsino.getText().toString(),
+                SpCursos.getSelectedItem().toString(),
+                mUser.getUid()+"/"+photos.getName()
+        );
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference("users");
+        mStorage = FirebaseStorage.getInstance();
+        mStorageRef = mStorage.getReference("photos/"+mUser.getUid()+"/enadedb.jpg");
+        Uri photo = Uri.fromFile(photos);
+        mRef.child(mUser.getUid()).setValue(usuario);
+        mStorageRef.putFile(photo);
+        Log.d("msg cadastro","Deu certo!");
         Intent MainScreen = new Intent(actCadastro.this, actMainMenu.class);
         startActivity(MainScreen);
     };

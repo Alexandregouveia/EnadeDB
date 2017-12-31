@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="64dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -30,11 +30,11 @@
                     android:id="@+id/MainName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:text="@string/Nome"
-                    android:textSize="24sp"
+                    android:textSize="32sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.026"
                     app:layout_constraintStart_toStartOf="parent"
@@ -45,11 +45,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:text="@string/LastName"
-                    android:textSize="24sp"
+                    android:textSize="32sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.032"
@@ -59,12 +59,12 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/MainPhoto"
                 android:layout_width="match_parent"
                 android:layout_height="102dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

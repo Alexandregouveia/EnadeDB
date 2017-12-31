@@ -19,6 +19,8 @@ public class Usuario  {
     ArrayList<Historico> historico;
     String photoUrl;
 
+    public Usuario(){}
+
     public Usuario(String name, String lastName, String instensino, String curso, String photoUrl) {
         this.name = name;
         this.lastName = lastName;
