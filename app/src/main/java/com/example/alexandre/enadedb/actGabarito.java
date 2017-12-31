@@ -12,6 +12,13 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +33,11 @@ public class actGabarito extends AppCompatActivity {
     Button btMainM;
     GridView gabView;
 
+
+    String curso;
+    String ano;
+    String gabarito;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +46,42 @@ public class actGabarito extends AppCompatActivity {
         qLetter = findViewById(R.id.qLetter);
         btMainM = findViewById(R.id.btMainMenu);
         btMainM.setOnClickListener(CallMainMenu);
-        showPopUp();
+        try{
+            curso = getIntent().getExtras().getString("curso");
+            ano = getIntent().getExtras().getString("ano");
+        }catch (Exception ex){}
+
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("gabarito");
+        mRef.child(curso).child(ano).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                gabarito = dataSnapshot.getValue(String.class);
+                String[] respostas = gabarito.split("#");
+                showPopUp(respostas);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     static class ViewHolder{
@@ -97,12 +144,12 @@ public class actGabarito extends AppCompatActivity {
 
 
     }
-    public void showPopUp(){
+    public void showPopUp(String[] resposta){
         int numberItems = 35;
         ArrayList<Resposta> respostas= new ArrayList<>();
 
-        for (int x = 0; x<numberItems; x++){
-            respostas.add(new Resposta(valueOf(x+1),"A"));
+        for (int x = 0; x<resposta.length; x++){
+            respostas.add(new Resposta(valueOf(x+1),resposta[x]));
         }
 
         gabView = findViewById(R.id.gabView);

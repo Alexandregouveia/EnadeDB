@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -101,17 +103,18 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
 
     public void CallLogin(){
         mAuth.signInWithEmailAndPassword(impMail.getText().toString(),impPass.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnSuccessListener(MainActivity.this, new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Intent logado = new Intent(MainActivity.this, actMainMenu.class);
-                            startActivity(logado);
-
-                        }
-                        Toast.makeText(MainActivity.this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show();
+                    public void onSuccess(AuthResult authResult) {
+                        Intent logado = new Intent(MainActivity.this, actMainMenu.class);
+                        startActivity(logado);
                     }
-                });
+                }).addOnFailureListener(MainActivity.this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MainActivity.this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     
 

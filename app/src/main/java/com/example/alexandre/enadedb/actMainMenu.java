@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.widget.BaseAdapter;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +43,7 @@ public class actMainMenu extends AppCompatActivity
     TextView Titulo;
     Spinner spAno;
     ArrayList<Historico> listH = new ArrayList<>();
-
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,9 @@ public class actMainMenu extends AppCompatActivity
         setContentView(R.layout.activity_act_main_menu);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mAuth = FirebaseAuth.getInstance();
+
 
         fpScreen = findViewById(R.id.flipperv);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -102,6 +107,8 @@ public class actMainMenu extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+
+//############################### Resolver questões ################################################
         if (id == R.id.nav_resol) { // Resolucao de questoes
             fpScreen.setDisplayedChild(1);
 
@@ -115,6 +122,7 @@ public class actMainMenu extends AppCompatActivity
             listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spAno.setAdapter(listaAno);
 
+//############################## VIsualizar Gabarito ###############################################
         } else if (id == R.id.nav_gabarito) { // Visualizar Gabarito
             fpScreen.setDisplayedChild(1);
             Visualizar = findViewById(R.id.IniciarRes);
@@ -124,6 +132,14 @@ public class actMainMenu extends AppCompatActivity
             Visualizar.setText("visualizar");
             Visualizar.setOnClickListener(CallGabarito);
 
+            spAno = findViewById(R.id.spTestyear);
+            ArrayAdapter<CharSequence> listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                    R.array.grupo_1,
+                    android.R.layout.simple_spinner_item);
+            listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spAno.setAdapter(listaAno);
+
+//################################ Baixar PDF ######################################################
         } else if (id == R.id.nav_pdf) { //Baixar Pdf
             fpScreen.setDisplayedChild(1);
             Visualizar = findViewById(R.id.IniciarRes);
@@ -142,6 +158,7 @@ public class actMainMenu extends AppCompatActivity
 
 
         } else if (id == R.id.nav_logout){ //Logout
+            mAuth.signOut();
             Intent logOut = new Intent(actMainMenu.this, MainActivity.class);
             startActivity(logOut);
         }
@@ -241,6 +258,8 @@ public class actMainMenu extends AppCompatActivity
 
     View.OnClickListener CallGabarito = view -> {
       Intent gab = new Intent(actMainMenu.this, actGabarito.class);
+      gab.putExtra("curso","Bach Ciência da Computação");
+      gab.putExtra("ano",spAno.getSelectedItem().toString());
       startActivity(gab);
     };
 

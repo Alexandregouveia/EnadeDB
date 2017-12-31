@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "472541258482-6di5fa2bctpohc2qml7n2iboc3gps13a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alexandre.enadedb",
+            "certificate_hash": "c4d267dc8a2fafccebb8212627805753fa0df8be"
+          }
+        },
+        {
           "client_id": "472541258482-3dc1b059ef86ug2m7tdjskncq7m8mrkj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +38,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
@@ -82,7 +86,9 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
 
     private Validator validator;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
+    private DatabaseReference mRef;
+    private FirebaseStorage mStorage;
+    private StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,27 +226,31 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
 
 
     private void Cadastrar(){
+
+        mAuth.createUserWithEmailAndPassword(ImpEmail.getText().toString(),ImpPass.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                FirebaseUser newUser = mAuth.getCurrentUser();
+                Usuario usuario = new Usuario(ImpName.getText().toString(),
+                        ImpLastName.getText().toString(),
+                        ImpInstEnsino.getText().toString(),
+                        SpCursos.getSelectedItem().toString(),
+                        newUser.getUid()+"/"+file.getName()
+                );
+                FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                mRef = mDatabase.getReference("users");
+                mStorage = FirebaseStorage.getInstance();
+                mStorageRef = mStorage.getReference("photos/"+newUser.getUid()+"/enadedb.jpg");
+                Uri photo = Uri.fromFile(file);
+                mRef.child(newUser.getUid()).setValue(usuario);
+                mStorageRef.putFile(photo);
+                Log.d("msg cadastro","Deu certo!");
+
+
+            }
+        });
         Intent LoginScreen = new Intent(actCadastro.this, MainActivity.class);
         startActivity(LoginScreen);
-        mAuth.createUserWithEmailAndPassword(ImpEmail.getText().toString(),ImpPass.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                            FirebaseUser newUser = task.getResult().getUser();
-                            mDatabase = FirebaseDatabase.getInstance();
-                            DatabaseReference mRef = mDatabase.getReference("users");
-                            Usuario user = new Usuario(ImpName.getText().toString(),
-                                    ImpLastName.getText().toString(),
-                                    ImpInstEnsino.getText().toString(),
-                                    SpCursos.getSelectedItem().toString(),
-                                    newUser.getUid()+"/"+file.getName()
-
-                            );
-
-                            mRef.child(newUser.getUid()).setValue(user);
-                        }
-
-                });
 
 
 
@@ -249,8 +259,16 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
 
     private void takePhotoFromCamera() {
         Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                "EnadeDb"+String.valueOf(System.currentTimeMillis())+".jpg");
+        try{
+            file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                    "EnadeDb.jpg");
+
+
+        }catch (Exception ex){
+            file.delete();
+            file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                    "EnadeDb.jpg");
+        }
 
         String authoroty = getApplicationContext().getPackageName() +".fileprovider";
         imguri = FileProvider.getUriForFile(this,authoroty,file);
