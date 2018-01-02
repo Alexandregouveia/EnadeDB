@@ -52,7 +52,7 @@ public class actGabarito extends AppCompatActivity {
         }catch (Exception ex){}
 
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("gabarito");
-        mRef.child(curso).child(ano).addChildEventListener(new ChildEventListener() {
+        mRef.child(curso).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 gabarito = dataSnapshot.getValue(String.class);

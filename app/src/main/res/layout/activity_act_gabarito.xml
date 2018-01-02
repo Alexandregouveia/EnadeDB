@@ -8,12 +8,11 @@
 
     <GridView
         android:id="@+id/gabView"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="396dp"
         android:layout_margin="8dp"
-        android:background="#e5e5e5"
         android:horizontalSpacing="1dp"
-        android:numColumns="3"
+        android:numColumns="2"
         android:verticalSpacing="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -61,6 +61,7 @@ public class actMainMenu extends AppCompatActivity
     TextView lastName;
     ImageView photoProfile;
 
+    Usuario usuario;
     ArrayList<Historico> listH = new ArrayList<>();
     File photo;
     Bitmap img;
@@ -88,7 +89,7 @@ public class actMainMenu extends AppCompatActivity
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                usuario = dataSnapshot.getValue(Usuario.class);
                 name.setText(usuario.getName());
                 lastName.setText(usuario.getLastName());
             }
@@ -180,7 +181,7 @@ public class actMainMenu extends AppCompatActivity
             listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spAno.setAdapter(listaAno);
 
-//############################## VIsualizar Gabarito ###############################################
+//############################## Visualizar Gabarito ###############################################
         } else if (id == R.id.nav_gabarito) { // Visualizar Gabarito
             fpScreen.setDisplayedChild(1);
             Visualizar = findViewById(R.id.IniciarRes);
@@ -316,7 +317,7 @@ public class actMainMenu extends AppCompatActivity
 
     View.OnClickListener CallGabarito = view -> {
       Intent gab = new Intent(actMainMenu.this, actGabarito.class);
-      gab.putExtra("curso","Bach Ciência da Computação");
+      gab.putExtra("curso",usuario.getCurso());
       gab.putExtra("ano",spAno.getSelectedItem().toString());
       startActivity(gab);
     };

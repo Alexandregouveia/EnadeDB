@@ -270,13 +270,13 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
                 ImpLastName.getText().toString(),
                 ImpInstEnsino.getText().toString(),
                 SpCursos.getSelectedItem().toString(),
-                mUser.getUid()+"/"+photos.getName()
+                mUser.getUid()+"/"+file.getName()
         );
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference("users");
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference("photos/"+mUser.getUid()+"/enadedb.jpg");
-        Uri photo = Uri.fromFile(photos);
+        Uri photo = Uri.fromFile(file);
         mRef.child(mUser.getUid()).setValue(usuario);
         mStorageRef.putFile(photo);
         Log.d("msg cadastro","Deu certo!");
