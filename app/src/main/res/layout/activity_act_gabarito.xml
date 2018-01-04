@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="396dp"
         android:layout_margin="8dp"
-        android:horizontalSpacing="1dp"
+        android:horizontalSpacing="3dp"
         android:numColumns="2"
-        android:verticalSpacing="1dp"
+        android:verticalSpacing="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

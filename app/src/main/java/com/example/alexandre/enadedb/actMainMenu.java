@@ -65,6 +65,9 @@ public class actMainMenu extends AppCompatActivity
     ArrayList<Historico> listH = new ArrayList<>();
     File photo;
     Bitmap img;
+    int grupo;
+    String curso;
+
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
@@ -87,18 +90,27 @@ public class actMainMenu extends AppCompatActivity
         mUser = mAuth.getCurrentUser();
         mRef = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
         mRef.addValueEventListener(new ValueEventListener() {
+
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 usuario = dataSnapshot.getValue(Usuario.class);
                 name.setText(usuario.getName());
                 lastName.setText(usuario.getLastName());
+                grupo = usuario.getGrupo();
+                curso = usuario.getCurso();
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
+
+
+
         try{
             photo = File.createTempFile("photo","jpg");
         }catch (Exception ex){}
@@ -173,13 +185,40 @@ public class actMainMenu extends AppCompatActivity
 
             responder = findViewById(R.id.IniciarRes);
             responder.setOnClickListener(StartQuest);
+            responder.setText(R.string.visualizar);
+            Titulo = findViewById(R.id.Titulo);
+            Titulo.setText(R.string.Gabarito);
+
 
             spAno = findViewById(R.id.spTestyear);
-            ArrayAdapter<CharSequence> listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                    R.array.grupo_1,
-                    android.R.layout.simple_spinner_item);
-            listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spAno.setAdapter(listaAno);
+            ArrayAdapter<CharSequence> listaAno;
+
+            //Define em quais anos tive prova
+            switch (grupo){
+                case 1:
+                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                            R.array.grupo_1,
+                            android.R.layout.simple_spinner_item);
+                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spAno.setAdapter(listaAno);
+                    break;
+                case 2:
+                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                            R.array.grupo_2,
+                            android.R.layout.simple_spinner_item);
+                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spAno.setAdapter(listaAno);
+                    break;
+                case 3:
+                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                            R.array.grupo_2,
+                            android.R.layout.simple_spinner_item);
+                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spAno.setAdapter(listaAno);
+                    break;
+            }
+
+
 
 //############################## Visualizar Gabarito ###############################################
         } else if (id == R.id.nav_gabarito) { // Visualizar Gabarito
@@ -192,11 +231,31 @@ public class actMainMenu extends AppCompatActivity
             Visualizar.setOnClickListener(CallGabarito);
 
             spAno = findViewById(R.id.spTestyear);
-            ArrayAdapter<CharSequence> listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                    R.array.grupo_1,
-                    android.R.layout.simple_spinner_item);
-            listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spAno.setAdapter(listaAno);
+            ArrayAdapter<CharSequence> listaAno;
+            //Define em quais anos tive prova
+            switch (grupo){
+                case 1:
+                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                            R.array.grupo_1,
+                            android.R.layout.simple_spinner_item);
+                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spAno.setAdapter(listaAno);
+                    break;
+                case 2:
+                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                            R.array.grupo_2,
+                            android.R.layout.simple_spinner_item);
+                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spAno.setAdapter(listaAno);
+                    break;
+                case 3:
+                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                            R.array.grupo_3,
+                            android.R.layout.simple_spinner_item);
+                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spAno.setAdapter(listaAno);
+                    break;
+            }
 
 //################################ Baixar PDF ######################################################
         } else if (id == R.id.nav_pdf) { //Baixar Pdf
@@ -207,6 +266,33 @@ public class actMainMenu extends AppCompatActivity
             Titulo.setText("Download do pdf");
             Visualizar.setText("Baixar");
 
+            spAno = findViewById(R.id.spTestyear);
+            ArrayAdapter<CharSequence> listaAno;
+            //Define em quais anos tive prova
+            switch (grupo){
+                case 1:
+                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                            R.array.grupo_1,
+                            android.R.layout.simple_spinner_item);
+                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spAno.setAdapter(listaAno);
+                    break;
+                case 2:
+                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                            R.array.grupo_2,
+                            android.R.layout.simple_spinner_item);
+                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spAno.setAdapter(listaAno);
+                    break;
+                case 3:
+                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
+                            R.array.grupo_3,
+                            android.R.layout.simple_spinner_item);
+                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spAno.setAdapter(listaAno);
+                    break;
+            }
+
         } else if (id == R.id.nav_atualizar) { //Atualizar Dados pessoais
             Intent Att = new Intent(actMainMenu.this, actCadastro.class);
             Att.putExtra("update",1);
@@ -215,22 +301,20 @@ public class actMainMenu extends AppCompatActivity
         } else if (id == R.id.nav_historico) { //Hitorico de partidas do usuario
             fpScreen.setDisplayedChild(0);
 
-
+//############################### Sair #############################################################
         } else if (id == R.id.nav_logout){ //Logout
             mAuth.signOut();
             Intent logOut = new Intent(actMainMenu.this, MainActivity.class);
             startActivity(logOut);
         }
 
+//##################################################################################################
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    View.OnClickListener StartQuest = view -> {
-        Intent quest = new Intent(this, actQuestao.class);
-        startActivity(quest);
-    };
+
 
 
     static class ViewHolder{
@@ -307,7 +391,7 @@ public class actMainMenu extends AppCompatActivity
         ArrayList<Historico> hist= new ArrayList<>();
 
         for (int x = 0; x<numberItems; x++){
-            hist.add(new Historico(new SimpleDateFormat("dd/MM/yyyy").format(new Date().getTime()),60,2005));
+            hist.add(new Historico(new SimpleDateFormat("dd/MM/yyyy").format(new Date().getTime()),70,2005));
         }
 
         ListView listaH = findViewById(R.id.ListHistoric);
@@ -320,6 +404,13 @@ public class actMainMenu extends AppCompatActivity
       gab.putExtra("curso",usuario.getCurso());
       gab.putExtra("ano",spAno.getSelectedItem().toString());
       startActivity(gab);
+    };
+
+    View.OnClickListener StartQuest = view -> {
+        Intent quest = new Intent(this, actQuestao.class);
+        quest.putExtra("curso",usuario.getCurso());
+        quest.putExtra("ano",spAno.getSelectedItem().toString());
+        startActivity(quest);
     };
 
 }

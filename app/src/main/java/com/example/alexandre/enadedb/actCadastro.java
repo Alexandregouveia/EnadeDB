@@ -86,6 +86,7 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
     Button Cadastrar;
 
 
+    int grupo;
     int flag = 0;
     File photos;
 
@@ -265,12 +266,25 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
     };
 
     View.OnClickListener AtualizarDados = view -> {
+
+        switch (SpCursos.getSelectedItem().toString()){
+            case "Eng computação":
+                grupo = 2;
+                break;
+            case "Bach Sistemas de Informação":
+                grupo = 2;
+                break;
+            case "Bach Ciência da Computação":
+                grupo = 2;
+                break;
+        }
+
         FirebaseUser mUser = mAuth.getCurrentUser();
         Usuario usuario = new Usuario(ImpName.getText().toString(),
                 ImpLastName.getText().toString(),
                 ImpInstEnsino.getText().toString(),
                 SpCursos.getSelectedItem().toString(),
-                mUser.getUid()+"/"+file.getName()
+                grupo
         );
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference("users");
@@ -290,10 +304,20 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
     };
 
 
-
-
-
     private void Cadastrar(){
+
+        switch (SpCursos.getSelectedItem().toString()){
+            case "Eng computação":
+                grupo = 2;
+                break;
+            case "Bach Sistemas de Informação":
+                grupo = 2;
+                break;
+            case "Bach Ciência da Computação":
+                grupo = 2;
+                break;
+        }
+
 
         mAuth.createUserWithEmailAndPassword(ImpEmail.getText().toString(),ImpPass.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
@@ -303,7 +327,7 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
                         ImpLastName.getText().toString(),
                         ImpInstEnsino.getText().toString(),
                         SpCursos.getSelectedItem().toString(),
-                        newUser.getUid()+"/"+file.getName()
+                        grupo
                 );
                 FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
                 mRef = mDatabase.getReference("users");

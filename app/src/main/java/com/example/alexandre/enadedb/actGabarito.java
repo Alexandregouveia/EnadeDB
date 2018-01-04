@@ -145,7 +145,6 @@ public class actGabarito extends AppCompatActivity {
 
     }
     public void showPopUp(String[] resposta){
-        int numberItems = 35;
         ArrayList<Resposta> respostas= new ArrayList<>();
 
         for (int x = 0; x<resposta.length; x++){

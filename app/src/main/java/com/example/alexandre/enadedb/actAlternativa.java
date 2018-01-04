@@ -14,6 +14,17 @@ public class actAlternativa extends AppCompatActivity {
     Button btSelect;
     RadioGroup Alternativas;
     RadioButton AltSelecionada;
+    RadioButton altA;
+    RadioButton altB;
+    RadioButton altC;
+    RadioButton altD;
+    RadioButton altE;
+
+    String txtA;
+    String txtB;
+    String txtC;
+    String txtD;
+    String txtE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +33,20 @@ public class actAlternativa extends AppCompatActivity {
         Alternativas = findViewById(R.id.alternativas);
         btSelect = findViewById(R.id.btConfirm);
         btSelect.setOnClickListener(ConfAlternativa);
+        altA = findViewById(R.id.alta);
+        altB = findViewById(R.id.altb);
+        altC = findViewById(R.id.altc);
+        altD = findViewById(R.id.altd);
+        altE = findViewById(R.id.alte);
+
+        try {
+            altA.setText(getIntent().getExtras().getString("a"));
+            altB.setText(getIntent().getExtras().getString("b"));
+            altC.setText(getIntent().getExtras().getString("c"));
+            altD.setText(getIntent().getExtras().getString("d"));
+            altE.setText(getIntent().getExtras().getString("e"));
+        }catch (Exception ex){}
+
     }
 
     View.OnClickListener ConfAlternativa = view -> {
@@ -31,7 +56,7 @@ public class actAlternativa extends AppCompatActivity {
         }else {
             String Letra = AltSelecionada.getTag().toString();
             String texto = AltSelecionada.getText().toString();
-            Toast.makeText(this, Letra, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, Letra, Toast.LENGTH_SHORT).show();
             Intent Retorno = new Intent(actAlternativa.this, actQuestao.class);
             Retorno.putExtra("Resultado", Letra);
             Retorno.putExtra("Texto", texto);

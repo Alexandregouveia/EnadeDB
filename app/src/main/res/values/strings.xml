@@ -101,6 +101,11 @@
     <string name="Sair">Sair</string>
     <string name="pessoal">Pessoal</string>
     <string name="provas">Provas</string>
+    <string name="loadingLogin">Efetuando login...</string>
+    <string name="erroLogin">Email e/ou senha incorreto</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="visualizar">Visualizar</string>
+    <string name="selecione">Selecione uma alternativa</string>
 
 
 </resources>

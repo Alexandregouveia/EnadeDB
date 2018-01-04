@@ -1,8 +1,5 @@
 package com.example.alexandre.enadedb;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.ArrayList;
 
 /**
@@ -17,16 +14,16 @@ public class Usuario  {
     String instensino;
     String curso;
     ArrayList<Historico> historico;
-    String photoUrl;
+    int grupo;
 
     public Usuario(){}
 
-    public Usuario(String name, String lastName, String instensino, String curso, String photoUrl) {
+    public Usuario(String name, String lastName, String instensino, String curso, int grupo) {
         this.name = name;
         this.lastName = lastName;
         this.instensino = instensino;
         this.curso = curso;
-        this.photoUrl = photoUrl;
+        this.grupo = grupo;
     }
 
     public String getName() {
@@ -69,11 +66,11 @@ public class Usuario  {
         this.historico = historico;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public int getGrupo() {
+        return grupo;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setGrupo(int grupo) {
+        this.grupo = grupo;
     }
 }

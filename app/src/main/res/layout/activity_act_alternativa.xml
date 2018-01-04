@@ -6,78 +6,73 @@
     android:layout_height="match_parent"
     tools:context="com.example.alexandre.enadedb.actAlternativa">
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+        <RadioGroup
+            android:id="@+id/alternativas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <RadioGroup
-                android:id="@+id/alternativas"
+            <RadioButton
+                android:id="@+id/alta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_weight="1"
+                android:tag="A"
+                android:text=""
 
-                <RadioButton
-                    android:id="@+id/alta"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:tag="alta"
-                    android:text="a"
+                />
 
-                    />
+            <RadioButton
+                android:id="@+id/altb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="B"
+                android:text=""
 
-                <RadioButton
-                    android:id="@+id/altb"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:tag="altb"
-                    android:text="b"
+                />
 
-                    />
+            <RadioButton
+                android:id="@+id/altc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="C"
+                android:text=""
 
-                <RadioButton
-                    android:id="@+id/altc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:tag="altc"
-                    android:text="c"
+                />
 
-                    />
+            <RadioButton
+                android:id="@+id/altd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="D"
+                android:text=""
 
-                <RadioButton
-                    android:id="@+id/altd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:tag="altd"
-                    android:text="d"
+                />
 
-                    />
+            <RadioButton
+                android:id="@+id/alte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="E"
+                android:text=""
 
-                <RadioButton
-                    android:id="@+id/alte"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:tag="alte"
-                    android:text="e"
-
-                    />
-            </RadioGroup>
-        </ScrollView>
-    </HorizontalScrollView>
+                />
+        </RadioGroup>
+    </ScrollView>
 
     <Button
         style="@style/Widget.AppCompat.Button.Borderless.Colored"

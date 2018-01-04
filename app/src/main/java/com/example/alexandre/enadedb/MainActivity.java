@@ -1,6 +1,8 @@
 package com.example.alexandre.enadedb;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
     private EditText impMail;
 
     private Validator validate;
+    private ProgressDialog loading;
 
 
     @Override
@@ -102,19 +105,8 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
     };
 
     public void CallLogin(){
-        mAuth.signInWithEmailAndPassword(impMail.getText().toString(),impPass.getText().toString())
-                .addOnSuccessListener(MainActivity.this, new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        Intent logado = new Intent(MainActivity.this, actMainMenu.class);
-                        startActivity(logado);
-                    }
-                }).addOnFailureListener(MainActivity.this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MainActivity.this, "E-mail ou senha incorretos", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Login login= new Login();
+        login.execute(null,null,null);
     }
     
 
@@ -124,4 +116,40 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
         android.os.Process.killProcess(android.os.Process.myPid());
         System.runFinalizersOnExit(true);
     }
+
+    public  class Login extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = new ProgressDialog(MainActivity.this);
+            loading.setMessage(getResources().getString(R.string.loadingLogin));
+            loading.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mAuth.signInWithEmailAndPassword(impMail.getText().toString(), impPass.getText().toString())
+                    .addOnSuccessListener(MainActivity.this, new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Intent logado = new Intent(MainActivity.this, actMainMenu.class);
+                            startActivity(logado);
+                        }
+                    })
+                    .addOnFailureListener(MainActivity.this, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MainActivity.this, getResources().getText(R.string.erroLogin), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            loading.dismiss();
+        }
+    }
 }
+

@@ -36,4 +36,9 @@
     <string name="Sair">Exit</string>
     <string name="pessoal">Personal</string>
     <string name="provas">Tests</string>
+    <string name="loadingLogin">effecting login...</string>
+    <string name="erroLogin">Email and/or password incorrect</string>
+    <string name="finalizar">Finish</string>
+    <string name="visualizar">Vizualization</string>
+    <string name="selecione">Select a alternative</string>
 </resources>
