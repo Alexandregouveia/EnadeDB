@@ -14,7 +14,7 @@
     <string name="btCadastrar">Register</string>
     <string name="confirmar">Confirm</string>
     <string name="btAlternativas">Alternatives</string>
-    <string name="btProx">Next question</string>
+    <string name="btProx">Next</string>
     <string name="Senha">Password</string>
     <string name="Galeria">Choose photo from gallery</string>
     <string name="Camera">Take a photo</string>
@@ -41,4 +41,7 @@
     <string name="finalizar">Finish</string>
     <string name="visualizar">Vizualization</string>
     <string name="selecione">Select a alternative</string>
+    <string name="title">Test Resolution</string>
+    <string name="iniciar">Start</string>
+    <string name="btPrev">Previous</string>
 </resources>

@@ -72,6 +72,7 @@ public class actMainMenu extends AppCompatActivity
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     DatabaseReference mRef;
+    DatabaseReference mRefH;
     FirebaseStorage mStorage;
     StorageReference mStorageRef;
 
@@ -109,7 +110,22 @@ public class actMainMenu extends AppCompatActivity
 
         });
 
+        mRefH = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid()).child("historico");
+        mRefH.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child: dataSnapshot.getChildren()){
+                    Historico hist = child.getValue(Historico.class);
+                    listH.add(hist);
+                }
+                showPopUp(listH);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         try{
             photo = File.createTempFile("photo","jpg");
@@ -136,7 +152,7 @@ public class actMainMenu extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        showPopUp();
+
 
     }
 
@@ -185,15 +201,15 @@ public class actMainMenu extends AppCompatActivity
 
             responder = findViewById(R.id.IniciarRes);
             responder.setOnClickListener(StartQuest);
-            responder.setText(R.string.visualizar);
+            responder.setText(R.string.iniciar);
             Titulo = findViewById(R.id.Titulo);
-            Titulo.setText(R.string.Gabarito);
+            Titulo.setText(R.string.title);
 
 
             spAno = findViewById(R.id.spTestyear);
             ArrayAdapter<CharSequence> listaAno;
 
-            //Define em quais anos tive prova
+            //Define em quais anos ocorreu
             switch (grupo){
                 case 1:
                     listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
@@ -386,16 +402,16 @@ public class actMainMenu extends AppCompatActivity
 
 
     }
-    public void showPopUp(){
-        int numberItems = 10;
-        ArrayList<Historico> hist= new ArrayList<>();
-
-        for (int x = 0; x<numberItems; x++){
-            hist.add(new Historico(new SimpleDateFormat("dd/MM/yyyy").format(new Date().getTime()),70,2005));
-        }
+    public void showPopUp(ArrayList<Historico> lh){
+//        int numberItems = 10;
+//        ArrayList<Historico> hist= new ArrayList<>();
+//
+//        for (int x = 0; x<numberItems; x++){
+//            hist.add(new Historico(new SimpleDateFormat("dd/MM/yyyy").format(new Date().getTime()),70,2005));
+//        }
 
         ListView listaH = findViewById(R.id.ListHistoric);
-        listaH.setAdapter(new cardAdapter(actMainMenu.this,hist));
+        listaH.setAdapter(new cardAdapter(actMainMenu.this,lh));
 
     }
 

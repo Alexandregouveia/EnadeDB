@@ -13,7 +13,7 @@
     <string name="btCadastrar">Cadastrar</string>
     <string name="confirmar">Confirmar</string>
     <string name="btAlternativas">alternativas</string>
-    <string name="btProx">proxima questão</string>
+    <string name="btProx">proxima</string>
     <string name="Senha">Senha</string>
     <string name="Galeria">Escolher foto da galeria</string>
     <string name="Camera">Tirar foto</string>
@@ -106,6 +106,9 @@
     <string name="finalizar">Finalizar</string>
     <string name="visualizar">Visualizar</string>
     <string name="selecione">Selecione uma alternativa</string>
+    <string name="title">Resolução de prova</string>
+    <string name="iniciar">Iniciar</string>
+    <string name="btPrev">Anterior</string>
 
 
 </resources>

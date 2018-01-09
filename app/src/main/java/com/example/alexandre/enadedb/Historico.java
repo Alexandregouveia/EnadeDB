@@ -12,6 +12,7 @@ public class Historico {
     private int score;
     private int ano;
 
+    public Historico(){}
 
     public Historico(String test_data, int score, int ano) {
         this.test_data = test_data;
