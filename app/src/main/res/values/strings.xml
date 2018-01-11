@@ -109,6 +109,12 @@
     <string name="title">Resolução de prova</string>
     <string name="iniciar">Iniciar</string>
     <string name="btPrev">Anterior</string>
+    <string name="Toatfirst">Esta é a primeira questão</string>
+    <string name="DescNext">Passa para proxima questão</string>
+    <string name="DescPrev">retorna para questão anterior</string>
+    <string name="DescMenu">Voltar para o menu principal</string>
+    <string name="de">de</string>
+    <string name="Questões">questões</string>
 
 
 </resources>

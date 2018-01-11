@@ -38,7 +38,7 @@
                 <ImageView
                     android:id="@+id/ImageQuestion"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     app:srcCompat="@color/background" />
             </LinearLayout>
 
@@ -49,26 +49,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="4"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/btAlternativas"
+            style="@android:style/Widget.Button"
             android:layout_width="match_parent"
-            android:layout_height="168dp"
+            android:layout_height="250dp"
             android:layout_marginBottom="64dp"
-            android:layout_weight="2"
+            android:layout_marginTop="8dp"
+            android:layout_weight="4"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:text="@string/btAlternativas" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="6"
+            android:layout_weight="3"
             android:orientation="horizontal">
 
 
             <ImageButton
                 android:id="@+id/btPrev"
+                android:contentDescription="@string/btPrev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -77,6 +82,7 @@
 
             <ImageButton
                 android:id="@+id/btMenu"
+                android:contentDescription="@string/DescMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -85,6 +91,7 @@
 
             <ImageButton
                 android:id="@+id/btNext"
+                android:contentDescription="@string/DescNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

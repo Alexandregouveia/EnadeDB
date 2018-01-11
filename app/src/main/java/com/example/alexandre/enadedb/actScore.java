@@ -11,6 +11,8 @@ public class actScore extends AppCompatActivity {
     TextView points;
     Button MainM;
 
+    Historico partida;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +20,13 @@ public class actScore extends AppCompatActivity {
 
         Button MainM = findViewById(R.id.btMain);
         MainM.setOnClickListener(CallMainMenu);
+
+        points = findViewById(R.id.txtScore);
+
+        try {
+            partida = getIntent().getExtras().getParcelable("partida");
+            points.setText(partida.getScore() + "% "+ getResources().getString(R.string.de) +" 35"+ getResources().getString(R.string.Questões));
+        }catch (Exception ex){}
 
     }
 
@@ -28,6 +37,9 @@ public class actScore extends AppCompatActivity {
 
     View.OnClickListener CallMainMenu = view -> {
         Intent mScreen = new Intent(actScore.this,actMainMenu.class);
+        mScreen.putExtra("atual", partida);
         startActivity(mScreen);
     };
+
+
 }

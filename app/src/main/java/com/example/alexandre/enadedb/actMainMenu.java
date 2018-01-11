@@ -87,6 +87,12 @@ public class actMainMenu extends AppCompatActivity
         lastName = findViewById(R.id.MainLastName);
         photoProfile = findViewById(R.id.MainPhoto);
 
+        try{
+            Historico hist = getIntent().getExtras().getParcelable("atual");
+            listH.add(hist);
+            FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).setValue(listH);
+        }catch (Exception ex){}
+
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         mRef = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
@@ -110,7 +116,7 @@ public class actMainMenu extends AppCompatActivity
 
         });
 
-        mRefH = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid()).child("historico");
+        mRefH = FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid());
         mRefH.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -155,6 +161,9 @@ public class actMainMenu extends AppCompatActivity
 
 
     }
+
+
+
 
     @Override
     public void onBackPressed() {

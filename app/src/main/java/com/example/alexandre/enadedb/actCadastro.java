@@ -288,11 +288,15 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
         );
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference("users");
+        mRef.child(mUser.getUid()).setValue(usuario);
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference("photos/"+mUser.getUid()+"/enadedb.jpg");
-        Uri photo = Uri.fromFile(file);
-        mRef.child(mUser.getUid()).setValue(usuario);
-        mStorageRef.putFile(photo);
+        try {
+            Uri photo = Uri.fromFile(file);
+
+            mStorageRef.putFile(photo);
+        }catch (Exception ex){}
+
         Log.d("msg cadastro","Deu certo!");
         Intent MainScreen = new Intent(actCadastro.this, actMainMenu.class);
         startActivity(MainScreen);

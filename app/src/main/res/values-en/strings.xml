@@ -44,4 +44,10 @@
     <string name="title">Test Resolution</string>
     <string name="iniciar">Start</string>
     <string name="btPrev">Previous</string>
+    <string name="Toatfirst">This is the first question</string>
+    <string name="DescNext">Pass to the next question</string>
+    <string name="DescPrev">Return to the prevous question</string>
+    <string name="DescMenu">Return to main menu</string>
+    <string name="de">of</string>
+    <string name="Questões">questions</string>
 </resources>

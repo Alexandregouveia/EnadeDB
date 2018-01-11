@@ -26,8 +26,10 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class actQuestao extends AppCompatActivity {
@@ -242,13 +244,20 @@ public class actQuestao extends AppCompatActivity {
     };
 
     View.OnClickListener CallEnd = view -> {
-        Intent score = new Intent(actQuestao.this,actScore.class);
+        Intent intentScore = new Intent(actQuestao.this,actScore.class);
         for (int j =0; j<listaQuestoes.size(); j++){
-            if (listaRespostas.get(j).equals(respostas[j]));
-            hits++;
+            if (listaRespostas.get(j).equals(respostas[j])){
+                hits++;
+            }
+
         }
-        score.putExtra("score",hits);
-        startActivity(score);
+        int score = (100*hits)/listaRespostas.size();
+        Historico hist = new Historico();
+        hist.setTest_data(new SimpleDateFormat("dd/MM/yyyy").format(new Date().getTime()));
+        hist.setAno(Integer.parseInt(ano));
+        hist.setScore(score);
+        intentScore.putExtra("partida", hist);
+        startActivity(intentScore);
     };
 
 
