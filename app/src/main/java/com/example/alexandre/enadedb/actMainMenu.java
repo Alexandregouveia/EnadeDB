@@ -1,19 +1,29 @@
 package com.example.alexandre.enadedb;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 import android.widget.BaseAdapter;
 
@@ -43,6 +54,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +64,7 @@ import static java.lang.String.valueOf;
 
 public class actMainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
 
     ViewFlipper fpScreen;
     Button responder;
@@ -61,8 +75,9 @@ public class actMainMenu extends AppCompatActivity
     TextView lastName;
     ImageView photoProfile;
 
+    Historico hist = null;
     Usuario usuario;
-    ArrayList<Historico> listH = new ArrayList<>();
+    ArrayList<Historico> listH;
     File photo;
     Bitmap img;
     int grupo;
@@ -71,10 +86,10 @@ public class actMainMenu extends AppCompatActivity
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    DatabaseReference mRef;
-    DatabaseReference mRefH;
     FirebaseStorage mStorage;
     StorageReference mStorageRef;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,20 +98,17 @@ public class actMainMenu extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
+        listH = new ArrayList<>();
         name = findViewById(R.id.MainName);
         lastName = findViewById(R.id.MainLastName);
         photoProfile = findViewById(R.id.MainPhoto);
 
-        try{
-            Historico hist = getIntent().getExtras().getParcelable("atual");
-            listH.add(hist);
-            FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).setValue(listH);
-        }catch (Exception ex){}
-
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        mRef = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
-        mRef.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid())
+                .addValueEventListener(new ValueEventListener() {
 
 
             @Override
@@ -116,30 +128,57 @@ public class actMainMenu extends AppCompatActivity
 
         });
 
-        mRefH = FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid());
-        mRefH.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child: dataSnapshot.getChildren()){
-                    Historico hist = child.getValue(Historico.class);
-                    listH.add(hist);
+
+
+
+        try{
+            hist = getIntent().getExtras().getParcelable("atual");
+        }catch (Exception ex){}
+
+        if (hist!=null){
+            listH.add(hist);
+            FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).
+                    addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot child: dataSnapshot.getChildren()){
+                        Historico hist = child.getValue(Historico.class);
+                        listH.add(hist);
+                    }
+                    showPopUp(listH);
                 }
-                showPopUp(listH);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+
+        }else{
+            FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot child: dataSnapshot.getChildren()){
+                        Historico hist = child.getValue(Historico.class);
+                        listH.add(hist);
+                    }
+                    showPopUp(listH);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
 
         try{
             photo = File.createTempFile("photo","jpg");
         }catch (Exception ex){}
 
-        mStorage = FirebaseStorage.getInstance();
-        mStorageRef = mStorage.getReference("photos/"+mUser.getUid()+"/enadedb.jpg");
-        mStorageRef.getFile(photo)
+        FirebaseStorage.getInstance().getReference("photos/"+mUser.getUid()+"/enadedb.jpg")
+                .getFile(photo)
                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -162,7 +201,11 @@ public class actMainMenu extends AppCompatActivity
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).setValue(listH);
+    }
 
 
     @Override
@@ -215,33 +258,33 @@ public class actMainMenu extends AppCompatActivity
             Titulo.setText(R.string.title);
 
 
-            spAno = findViewById(R.id.spTestyear);
-            ArrayAdapter<CharSequence> listaAno;
 
-            //Define em quais anos ocorreu
-            switch (grupo){
-                case 1:
-                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                            R.array.grupo_1,
-                            android.R.layout.simple_spinner_item);
-                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spAno.setAdapter(listaAno);
-                    break;
-                case 2:
-                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                            R.array.grupo_2,
-                            android.R.layout.simple_spinner_item);
-                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spAno.setAdapter(listaAno);
-                    break;
-                case 3:
-                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                            R.array.grupo_2,
-                            android.R.layout.simple_spinner_item);
-                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spAno.setAdapter(listaAno);
-                    break;
-            }
+            spAno = findViewById(R.id.spTestyear);
+
+
+            ArrayList<CharSequence> anos = new ArrayList<>();
+            FirebaseDatabase.getInstance().getReference("provas").child(usuario.getCurso()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot child: dataSnapshot.getChildren()){
+                        anos.add(child.getKey());
+                    }
+                    Log.d("chaves", String.valueOf(anos.size()));
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            ArrayAdapter<CharSequence> spinnerArrayAdapter = new ArrayAdapter<>(
+                    getApplicationContext(), android.R.layout.simple_spinner_item, anos);
+            spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+            spAno.setAdapter(spinnerArrayAdapter);
+
+
+
 
 
 
@@ -285,8 +328,13 @@ public class actMainMenu extends AppCompatActivity
 //################################ Baixar PDF ######################################################
         } else if (id == R.id.nav_pdf) { //Baixar Pdf
             fpScreen.setDisplayedChild(1);
+
+            int permissionStorage = ContextCompat.checkSelfPermission(actMainMenu.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (permissionStorage== PackageManager.PERMISSION_DENIED){
+                ActivityCompat.requestPermissions(actMainMenu.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},3);
+            }
             Visualizar = findViewById(R.id.IniciarRes);
-            //Visualizar.setOnClickListener(DownloadPdf);
+            Visualizar.setOnClickListener(DownloadPdf);
             Titulo = findViewById(R.id.Titulo);
             Titulo.setText("Download do pdf");
             Visualizar.setText("Baixar");
@@ -437,5 +485,29 @@ public class actMainMenu extends AppCompatActivity
         quest.putExtra("ano",spAno.getSelectedItem().toString());
         startActivity(quest);
     };
+
+    View.OnClickListener DownloadPdf = view -> {
+        FirebaseStorage.getInstance().getReference(usuario.getCurso())
+                .child(spAno.getSelectedItem().toString())
+                .child("prova.pdf")
+                .getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                        Uri downUri = uri;
+                        DownloadManager.Request request = new DownloadManager.Request(downUri);
+                        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+                        request.setAllowedOverRoaming(false);
+                        request.setTitle(usuario.getCurso()+"-"+spAno.getSelectedItem().toString());
+                        request.setDescription("Downloading " + usuario.getCurso()+"-"+spAno.getSelectedItem().toString());
+                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, usuario.getCurso()+"-"+spAno.getSelectedItem().toString()+".pdf");
+                        downloadManager.enqueue(request);
+
+
+                    }
+                });
+    };
+
 
 }

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -171,13 +173,18 @@ public class actQuestao extends AppCompatActivity {
         }
         mText.setText(listaQuestoes.get(0).getText());
         if (listaQuestoes.get(0).getImage()!=null){
-            FirebaseStorage.getInstance().getReference(listaQuestoes.get(0).getImage()).getFile(img)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            mImage.setImageDrawable(Drawable.createFromPath(img.getAbsolutePath()));
-                        }
-                    });
+            if (listaQuestoes.get(0).getImage()!=null){
+                FirebaseStorage.getInstance().getReference(listaQuestoes.get(0).getImage()).getFile(img)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                                mImage.setImageDrawable(Drawable.createFromPath(img.getAbsolutePath()));
+                                Picasso.with(actQuestao.this).load(img).centerCrop().into(mImage);
+                            }
+                        });
+            }else{
+                mImage.setVisibility(View.INVISIBLE);
+            }
         }else{
             mImage.setVisibility(View.INVISIBLE);
         }
@@ -219,8 +226,20 @@ public class actQuestao extends AppCompatActivity {
     };
 
     View.OnClickListener CallNext = view -> {
-        if (letra!=null){
-            listaRespostas.set(i,letra);
+        //TODO Remover comentaŕios
+//        if (letra!=null){
+//            listaRespostas.set(i,letra);
+//            i= i+1;
+//            if (i==listaQuestoes.size()-1){
+//                last=true;
+//            }
+//
+//            letra = null;
+//            Proxima(i, last);
+//        }else{
+//            Toast.makeText(this, getResources().getText(R.string.selecione), Toast.LENGTH_SHORT).show();
+//        }
+
             i= i+1;
             if (i==listaQuestoes.size()-1){
                 last=true;
@@ -228,10 +247,6 @@ public class actQuestao extends AppCompatActivity {
 
             letra = null;
             Proxima(i, last);
-        }else{
-            Toast.makeText(this, getResources().getText(R.string.selecione), Toast.LENGTH_SHORT).show();
-        }
-
     };
 
     View.OnClickListener CallPrev = view -> {

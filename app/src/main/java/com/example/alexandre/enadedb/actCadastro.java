@@ -383,8 +383,8 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
             cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             cropIntent.putExtra("crop","true");
-            cropIntent.putExtra("outputX",140);
-            cropIntent.putExtra("outputY",160);
+            cropIntent.putExtra("outputX",280);
+            cropIntent.putExtra("outputY",320);
             cropIntent.putExtra("aspectX",3);
             cropIntent.putExtra("aspectY",4);
             cropIntent.putExtra("scaleUpIfNeeded",true);

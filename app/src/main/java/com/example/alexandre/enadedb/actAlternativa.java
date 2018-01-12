@@ -88,7 +88,8 @@ public class actAlternativa extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            altC.setButtonDrawable(Drawable.createFromPath(imgB.getAbsolutePath()));
+                            altB.setButtonDrawable(Drawable.createFromPath(imgB.getAbsolutePath()));
+
                         }
                     });
 
@@ -143,9 +144,9 @@ public class actAlternativa extends AppCompatActivity {
     };
 
     public boolean IsPicture(String input){
-        String[] extsension = input.split(".");
+        String[] extsension = input.split("\\.");
         try {
-            if (extsension[extsension.length -1]=="png"){
+            if (extsension[extsension.length -1].equals("png")){
                 return true;
             }else{
                 return false;
