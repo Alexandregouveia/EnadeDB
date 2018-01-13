@@ -113,9 +113,10 @@
     <string name="DescNext">Passa para proxima questão</string>
     <string name="DescPrev">retorna para questão anterior</string>
     <string name="DescMenu">Voltar para o menu principal</string>
-    <string name="de">de</string>
+    <string name="de">das</string>
     <string name="Questões">questões</string>
     <string name="finish">Download Concluido</string>
+    <string name="reset">Resetar senha</string>
 
 
 </resources>

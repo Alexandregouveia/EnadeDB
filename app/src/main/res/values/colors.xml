@@ -7,4 +7,5 @@
     <color name="low">#f10000</color>
     <color name="medium">#dfd000</color>
     <color name="high">#00b300</color>
+    <color name="login">#000</color>
 </resources>

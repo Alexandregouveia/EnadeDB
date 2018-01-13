@@ -278,10 +278,14 @@ public class actMainMenu extends AppCompatActivity
 
                 }
             });
-            ArrayAdapter<CharSequence> spinnerArrayAdapter = new ArrayAdapter<>(
-                    getApplicationContext(), android.R.layout.simple_spinner_item, anos);
-            spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-            spAno.setAdapter(spinnerArrayAdapter);
+//            ArrayAdapter<CharSequence> spinnerArrayAdapter = new ArrayAdapter<>(
+//                    getApplicationContext(), android.R.layout.simple_spinner_item, anos);
+//            spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+//            spAno.setAdapter(spinnerArrayAdapter);
+            ArrayAdapter<CharSequence> spin = ArrayAdapter.createFromResource(getApplicationContext(),R.array.grupo_2,android.R.layout.simple_spinner_item);
+            spin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spAno.setAdapter(spin);
+
 
 
 

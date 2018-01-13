@@ -55,9 +55,13 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
 
         Button NewUser = findViewById(R.id.btNewUser);
         NewUser.setOnClickListener(CreateUser);
+        
+        Button btReset = findViewById(R.id.btReset);
+        btReset.setOnClickListener(CallReset);
 
         validate = new Validator(this);
         validate.setValidationListener(this);
+
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -151,5 +155,18 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
             loading.dismiss();
         }
     }
+    
+    View.OnClickListener CallReset = view -> {
+        try {
+            mAuth.sendPasswordResetEmail(impMail.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(MainActivity.this, "Email enviado com sucesso!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }catch (NullPointerException ex){
+            Toast.makeText(this, "Informe seu email", Toast.LENGTH_SHORT).show();
+        }
+    };
 }
 

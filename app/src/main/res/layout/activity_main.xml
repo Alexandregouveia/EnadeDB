@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.556" />
+        app:layout_constraintVertical_bias="0.548" />
 
     <EditText
         android:id="@+id/ImpPassw"
@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.685" />
+        app:layout_constraintVertical_bias="0.686" />
 
     <Button
         android:id="@+id/btLogin"
@@ -48,11 +48,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/Login"
+        android:background="@color/Primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.799" />
+        app:layout_constraintVertical_bias="0.788" />
 
     <TextView
         android:id="@+id/textView4"
@@ -85,7 +86,7 @@
         app:layout_constraintHorizontal_bias="0.024"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.624" />
+        app:layout_constraintVertical_bias="0.61" />
 
     <Button
         android:id="@+id/btNewUser"
@@ -101,7 +102,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.94" />
+        app:layout_constraintVertical_bias="0.984" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -116,5 +117,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/logo" />
+
+    <Button
+        android:id="@+id/btReset"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="190dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/reset"
+        android:textColor="#fff"
+        android:background="@color/Accent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.884" />
 
 </android.support.constraint.ConstraintLayout>
