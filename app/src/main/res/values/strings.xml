@@ -118,6 +118,7 @@
     <string name="Questões">questões</string>
     <string name="finish">Download Concluido</string>
     <string name="reset">Resetar senha</string>
+    <string name="primeira">Esta é a primeira questão</string>
 
 
 </resources>

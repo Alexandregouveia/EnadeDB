@@ -19,8 +19,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:id="@+id/btMainMenu"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

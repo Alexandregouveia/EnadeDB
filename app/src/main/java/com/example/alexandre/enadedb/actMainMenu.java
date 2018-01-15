@@ -270,6 +270,10 @@ public class actMainMenu extends AppCompatActivity
                     for (DataSnapshot child: dataSnapshot.getChildren()){
                         anos.add(child.getKey());
                     }
+                    ArrayAdapter<CharSequence> spinnerArrayAdapter = new ArrayAdapter<>(
+                            getApplicationContext(), android.R.layout.simple_spinner_item, anos);
+                    spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+                    spAno.setAdapter(spinnerArrayAdapter);
                     Log.d("chaves", String.valueOf(anos.size()));
                 }
 
@@ -278,56 +282,42 @@ public class actMainMenu extends AppCompatActivity
 
                 }
             });
-//            ArrayAdapter<CharSequence> spinnerArrayAdapter = new ArrayAdapter<>(
-//                    getApplicationContext(), android.R.layout.simple_spinner_item, anos);
-//            spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-//            spAno.setAdapter(spinnerArrayAdapter);
-            ArrayAdapter<CharSequence> spin = ArrayAdapter.createFromResource(getApplicationContext(),R.array.grupo_2,android.R.layout.simple_spinner_item);
-            spin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spAno.setAdapter(spin);
-
-
-
-
-
 
 
 //############################## Visualizar Gabarito ###############################################
         } else if (id == R.id.nav_gabarito) { // Visualizar Gabarito
             fpScreen.setDisplayedChild(1);
             Visualizar = findViewById(R.id.IniciarRes);
-            //Visualizar.setOnClickListener(CallGabarito);
-            Titulo = findViewById(R.id.Titulo);
-            Titulo.setText("Conferir Gabarito");
             Visualizar.setText("visualizar");
             Visualizar.setOnClickListener(CallGabarito);
 
+            Titulo = findViewById(R.id.Titulo);
+            Titulo.setText("Conferir Gabarito");
+
             spAno = findViewById(R.id.spTestyear);
             ArrayAdapter<CharSequence> listaAno;
-            //Define em quais anos tive prova
-            switch (grupo){
-                case 1:
-                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                            R.array.grupo_1,
-                            android.R.layout.simple_spinner_item);
-                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spAno.setAdapter(listaAno);
-                    break;
-                case 2:
-                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                            R.array.grupo_2,
-                            android.R.layout.simple_spinner_item);
-                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spAno.setAdapter(listaAno);
-                    break;
-                case 3:
-                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                            R.array.grupo_3,
-                            android.R.layout.simple_spinner_item);
-                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spAno.setAdapter(listaAno);
-                    break;
-            }
+
+            //Define em quais anos teve prova
+            ArrayList<CharSequence> anos = new ArrayList<>();
+            FirebaseDatabase.getInstance().getReference("gabarito").child(usuario.getCurso()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot child: dataSnapshot.getChildren()){
+                        anos.add(child.getKey());
+                    }
+                    ArrayAdapter<CharSequence> spinnerArrayAdapter = new ArrayAdapter<>(
+                            getApplicationContext(), android.R.layout.simple_spinner_item, anos);
+                    spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+                    spAno.setAdapter(spinnerArrayAdapter);
+                    Log.d("chaves", String.valueOf(anos.size()));
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
 //################################ Baixar PDF ######################################################
         } else if (id == R.id.nav_pdf) { //Baixar Pdf
@@ -344,32 +334,29 @@ public class actMainMenu extends AppCompatActivity
             Visualizar.setText("Baixar");
 
             spAno = findViewById(R.id.spTestyear);
-            ArrayAdapter<CharSequence> listaAno;
-            //Define em quais anos tive prova
-            switch (grupo){
-                case 1:
-                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                            R.array.grupo_1,
-                            android.R.layout.simple_spinner_item);
-                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spAno.setAdapter(listaAno);
-                    break;
-                case 2:
-                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                            R.array.grupo_2,
-                            android.R.layout.simple_spinner_item);
-                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spAno.setAdapter(listaAno);
-                    break;
-                case 3:
-                    listaAno = ArrayAdapter.createFromResource(getApplicationContext(),
-                            R.array.grupo_3,
-                            android.R.layout.simple_spinner_item);
-                    listaAno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spAno.setAdapter(listaAno);
-                    break;
-            }
 
+            //Define em quais anos teve prova
+
+            FirebaseDatabase.getInstance().getReference("PDF").child(usuario.getCurso()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String anos = dataSnapshot.getValue(String.class);
+                    String[] listAnos = anos.split("#");
+                    ArrayAdapter<CharSequence> spinnerArrayAdapter = new ArrayAdapter<>(
+                            getApplicationContext(), android.R.layout.simple_spinner_item, listAnos);
+                    spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+                    spAno.setAdapter(spinnerArrayAdapter);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+//####################### Atualizar dados pessoais##################################################
         } else if (id == R.id.nav_atualizar) { //Atualizar Dados pessoais
             Intent Att = new Intent(actMainMenu.this, actCadastro.class);
             Att.putExtra("update",1);
@@ -491,6 +478,7 @@ public class actMainMenu extends AppCompatActivity
     };
 
     View.OnClickListener DownloadPdf = view -> {
+        Log.d("Selecionado", spAno.getSelectedItem().toString());
         FirebaseStorage.getInstance().getReference(usuario.getCurso())
                 .child(spAno.getSelectedItem().toString())
                 .child("prova.pdf")

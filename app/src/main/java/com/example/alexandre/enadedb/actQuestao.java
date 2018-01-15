@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import java.util.List;
 
 public class actQuestao extends AppCompatActivity {
 
+    ScrollView scQuestion;;
     Button btAlternativa ;
     ImageButton btProxima;
     ImageButton btAnterior;
@@ -79,7 +81,7 @@ public class actQuestao extends AppCompatActivity {
         btMainMenu = findViewById(R.id.btMenu);
         btMainMenu.setOnClickListener(CallMenu);
 
-
+        scQuestion = findViewById(R.id.scrollQ);
 
         try{
             curso = getIntent().getExtras().getString("curso");
@@ -171,15 +173,15 @@ public class actQuestao extends AppCompatActivity {
         for (int z=0; z<listaQuestoes.size(); z++){
             listaRespostas.add("");
         }
-        mText.setText(listaQuestoes.get(0).getText());
-        if (listaQuestoes.get(0).getImage()!=null){
+        mText.setText(listaQuestoes.get(0).getText().replace("\\n", System.getProperty("line.separator")));
+        if (listaQuestoes.get(0).getImage()!=null){  //Verifica a presença de imagens
             if (listaQuestoes.get(0).getImage()!=null){
                 FirebaseStorage.getInstance().getReference(listaQuestoes.get(0).getImage()).getFile(img)
                         .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                                mImage.setImageDrawable(Drawable.createFromPath(img.getAbsolutePath()));
-                                Picasso.with(actQuestao.this).load(img).centerInside().centerInside().into(mImage);
+//
+                                Picasso.with(actQuestao.this).load(img).skipMemoryCache().into(mImage);
                             }
                         });
             }else{
@@ -191,8 +193,9 @@ public class actQuestao extends AppCompatActivity {
 
     }
     public void Proxima(int indice, boolean last){
+        scQuestion.fullScroll(0);
         btAlternativa.setText(getResources().getText(R.string.btAlternativas));
-        mText.setText(listaQuestoes.get(indice).getText());
+        mText.setText(listaQuestoes.get(indice).getText().replace("\\n", System.getProperty("line.separator")).replace("\n", System.getProperty("line.separator")));
         if (listaQuestoes.get(indice).getImage()!=null){
 
 
@@ -227,24 +230,24 @@ public class actQuestao extends AppCompatActivity {
     };
 
     View.OnClickListener CallNext = view -> {
-        //TODO Remover comentaŕios
-//        if (letra!=null){
-//            listaRespostas.set(i,letra);
-//            i= i+1;
-//            if (i==listaQuestoes.size()-1){
-//                last=true;
-//            }
-//
-//            letra = null;
-//            Proxima(i, last);
-//        }else{
-//            Toast.makeText(this, getResources().getText(R.string.selecione), Toast.LENGTH_SHORT).show();
-//        }
 
+        if (letra!=null){
+            listaRespostas.set(i,letra);
             i= i+1;
             if (i==listaQuestoes.size()-1){
                 last=true;
             }
+
+            letra = null;
+            Proxima(i, last);
+        }else{
+            Toast.makeText(this, getResources().getText(R.string.selecione), Toast.LENGTH_SHORT).show();
+        }
+
+//            i= i+1;
+//            if (i==listaQuestoes.size()-1){
+//                last=true;
+//            }
 
             letra = null;
             Proxima(i, last);
@@ -255,14 +258,14 @@ public class actQuestao extends AppCompatActivity {
           i=i-1;
           Proxima(i,false);
       }else{
-          Toast.makeText(this, "Não existe questão anterior", Toast.LENGTH_SHORT).show();
+          Toast.makeText(this, getResources().getText(R.string.primeira), Toast.LENGTH_SHORT).show();
       }
     };
 
     View.OnClickListener CallEnd = view -> {
         Intent intentScore = new Intent(actQuestao.this,actScore.class);
         for (int j =0; j<listaQuestoes.size(); j++){
-            if (listaRespostas.get(j).equals(respostas[j])){
+            if (listaRespostas.get(j).equals(respostas[j]) || respostas[j].equals("*") ){
                 hits++;
             }
 
