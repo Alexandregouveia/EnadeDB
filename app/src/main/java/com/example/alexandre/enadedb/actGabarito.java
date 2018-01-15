@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,26 +53,12 @@ public class actGabarito extends AppCompatActivity {
         }catch (Exception ex){}
 
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("gabarito");
-        mRef.child(curso).addChildEventListener(new ChildEventListener() {
+        mRef.child(curso).child(ano).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                gabarito = dataSnapshot.getValue(String.class);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                gabarito  = dataSnapshot.getValue(String.class);
                 String[] respostas = gabarito.split("#");
                 showPopUp(respostas);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 
@@ -80,7 +67,6 @@ public class actGabarito extends AppCompatActivity {
 
             }
         });
-
 
     }
 

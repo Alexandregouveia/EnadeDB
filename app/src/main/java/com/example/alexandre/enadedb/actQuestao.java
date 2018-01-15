@@ -179,7 +179,7 @@ public class actQuestao extends AppCompatActivity {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 //                                mImage.setImageDrawable(Drawable.createFromPath(img.getAbsolutePath()));
-                                Picasso.with(actQuestao.this).load(img).centerCrop().into(mImage);
+                                Picasso.with(actQuestao.this).load(img).centerInside().centerInside().into(mImage);
                             }
                         });
             }else{
@@ -201,7 +201,8 @@ public class actQuestao extends AppCompatActivity {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             mImage.setVisibility(View.VISIBLE);
-                            mImage.setImageDrawable(Drawable.createFromPath(img.getAbsolutePath()));
+//                            mImage.setImageDrawable(Drawable.createFromPath(img.getAbsolutePath()));
+                            Picasso.with(actQuestao.this).load(img).skipMemoryCache().into(mImage);
                         }
                     });
         }else{

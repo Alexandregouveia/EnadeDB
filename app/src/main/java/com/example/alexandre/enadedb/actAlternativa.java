@@ -81,6 +81,7 @@ public class actAlternativa extends AppCompatActivity {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             altA.setButtonDrawable(Drawable.createFromPath(imgA.getAbsolutePath()));
+
                         }
                     });
 
