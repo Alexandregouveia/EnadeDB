@@ -2,6 +2,7 @@ package com.example.alexandre.enadedb;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -59,6 +60,7 @@ public class actQuestao extends AppCompatActivity {
 
     ArrayList<Questoes> listaQuestoes = new ArrayList<>();
     List<String> listaRespostas;
+    ArrayList<String> result = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,8 +174,8 @@ public class actQuestao extends AppCompatActivity {
         listaRespostas = new ArrayList<>();
         for (int z=0; z<listaQuestoes.size(); z++){
             listaRespostas.add("");
-        }
-        mText.setText(listaQuestoes.get(0).getText().replace("\\n", System.getProperty("line.separator")));
+        }//TODO Linha alterada
+        mText.setText(listaQuestoes.get(0).getText().replace("\\n", System.getProperty("line.separator")).replace("\\t", "\t"));
         if (listaQuestoes.get(0).getImage()!=null){  //Verifica a presença de imagens
             if (listaQuestoes.get(0).getImage()!=null){
                 FirebaseStorage.getInstance().getReference(listaQuestoes.get(0).getImage()).getFile(img)
@@ -195,7 +197,9 @@ public class actQuestao extends AppCompatActivity {
     public void Proxima(int indice, boolean last){
         scQuestion.fullScroll(0);
         btAlternativa.setText(getResources().getText(R.string.btAlternativas));
-        mText.setText(listaQuestoes.get(indice).getText().replace("\\n", System.getProperty("line.separator")).replace("\n", System.getProperty("line.separator")));
+        mText.setText(listaQuestoes.get(indice).getText().replace("\\n", System.getProperty("line.separator"))
+                .replace("\n", System.getProperty("line.separator"))
+                .replace("\\t","\t"));
         if (listaQuestoes.get(indice).getImage()!=null){
 
 
@@ -267,6 +271,9 @@ public class actQuestao extends AppCompatActivity {
         for (int j =0; j<listaQuestoes.size(); j++){
             if (listaRespostas.get(j).equals(respostas[j]) || respostas[j].equals("*") ){
                 hits++;
+                result.add("O");
+            }else {
+                result.add("X");
             }
 
         }
@@ -276,6 +283,7 @@ public class actQuestao extends AppCompatActivity {
         hist.setAno(Integer.parseInt(ano));
         hist.setScore(score);
         intentScore.putExtra("partida", hist);
+        intentScore.putStringArrayListExtra("acertos",result);
         startActivity(intentScore);
     };
 

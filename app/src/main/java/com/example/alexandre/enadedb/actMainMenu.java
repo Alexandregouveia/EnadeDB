@@ -4,9 +4,11 @@ import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -74,6 +76,7 @@ public class actMainMenu extends AppCompatActivity
     TextView name;
     TextView lastName;
     ImageView photoProfile;
+    ProgressDialog loading;
 
     Historico hist = null;
     Usuario usuario;
@@ -98,7 +101,9 @@ public class actMainMenu extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        loading = new ProgressDialog(actMainMenu.this);
+        loading.setMessage(getResources().getString(R.string.getUserInfo));
+        loading.show();
 
         listH = new ArrayList<>();
         name = findViewById(R.id.MainName);
@@ -118,6 +123,7 @@ public class actMainMenu extends AppCompatActivity
                 lastName.setText(usuario.getLastName());
                 grupo = usuario.getGrupo();
                 curso = usuario.getCurso();
+                loading.dismiss();
 
             }
 
@@ -133,44 +139,30 @@ public class actMainMenu extends AppCompatActivity
 
         try{
             hist = getIntent().getExtras().getParcelable("atual");
-        }catch (Exception ex){}
-
-        if (hist!=null){
             listH.add(hist);
-            FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).
-                    addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot child: dataSnapshot.getChildren()){
-                        Historico hist = child.getValue(Historico.class);
-                        listH.add(hist);
-                    }
-                    showPopUp(listH);
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+        }catch (Exception ex){
 
-                }
-            });
-
-        }else{
-            FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot child: dataSnapshot.getChildren()){
-                        Historico hist = child.getValue(Historico.class);
-                        listH.add(hist);
-                    }
-                    showPopUp(listH);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
         }
+        FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child: dataSnapshot.getChildren()){
+                    Historico hist = child.getValue(Historico.class);
+                    listH.add(hist);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        showPopUp(listH);
+
+
 
 
         try{
@@ -184,6 +176,7 @@ public class actMainMenu extends AppCompatActivity
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                         img = BitmapFactory.decodeFile(photo.toString());
                         photoProfile.setImageBitmap(img);
+
                     }
                 });
 
@@ -202,8 +195,8 @@ public class actMainMenu extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).setValue(listH);
     }
 
@@ -493,8 +486,12 @@ public class actMainMenu extends AppCompatActivity
                         request.setAllowedOverRoaming(false);
                         request.setTitle(usuario.getCurso()+"-"+spAno.getSelectedItem().toString());
                         request.setDescription("Downloading " + usuario.getCurso()+"-"+spAno.getSelectedItem().toString());
-                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, usuario.getCurso()+"-"+spAno.getSelectedItem().toString()+".pdf");
+                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, spAno.getSelectedItem().toString()+" - "+usuario.getCurso()+".pdf");
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                         downloadManager.enqueue(request);
+
+
+
 
 
                     }
