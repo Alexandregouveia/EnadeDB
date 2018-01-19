@@ -61,6 +61,7 @@ public class actScore extends AppCompatActivity {
     static class ViewHolder{
         TextView Number;
         TextView Letter;
+        TextView txtQ;
 
     }
 
@@ -98,6 +99,7 @@ public class actScore extends AppCompatActivity {
                 view = layoutInflater.inflate(R.layout.activity_gab_card, parent, false);
                 viewHolder.Number = view.findViewById(R.id.qNumber);
                 viewHolder.Letter = view.findViewById(R.id.qLetter);
+                viewHolder.txtQ = view.findViewById(R.id.txtQ);
                 view.setTag(viewHolder);
 
             }else{
@@ -112,9 +114,11 @@ public class actScore extends AppCompatActivity {
                 if (resposta.getLetter().equals("X")){
                     viewHolder.Number.setBackgroundColor(getColor(R.color.low));
                     viewHolder.Letter.setBackgroundColor(getColor(R.color.low));
+                    viewHolder.txtQ.setBackgroundColor(getColor(R.color.low));
                 }else{
                     viewHolder.Number.setBackgroundColor(getColor(R.color.high));
                     viewHolder.Letter.setBackgroundColor(getColor(R.color.high));
+                    viewHolder.txtQ.setBackgroundColor(getColor(R.color.high));
                 }
 
             }

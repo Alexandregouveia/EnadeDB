@@ -80,7 +80,7 @@ public class actMainMenu extends AppCompatActivity
 
     Historico hist = null;
     Usuario usuario;
-    ArrayList<Historico> listH;
+    ArrayList<Historico> listH = new ArrayList<>();
     File photo;
     Bitmap img;
     int grupo;
@@ -89,10 +89,14 @@ public class actMainMenu extends AppCompatActivity
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    FirebaseStorage mStorage;
-    StorageReference mStorageRef;
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).setValue(listH);
+        listH = new ArrayList<>();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +105,13 @@ public class actMainMenu extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         loading = new ProgressDialog(actMainMenu.this);
         loading.setMessage(getResources().getString(R.string.getUserInfo));
         loading.show();
 
-        listH = new ArrayList<>();
+
         name = findViewById(R.id.MainName);
         lastName = findViewById(R.id.MainLastName);
         photoProfile = findViewById(R.id.MainPhoto);
@@ -137,30 +143,37 @@ public class actMainMenu extends AppCompatActivity
 
 
 
-        try{
-            hist = getIntent().getExtras().getParcelable("atual");
-            listH.add(hist);
 
-        }catch (Exception ex){
-
-        }
         FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot child: dataSnapshot.getChildren()){
                     Historico hist = child.getValue(Historico.class);
                     listH.add(hist);
                 }
-
-
+                showPopUp(listH);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
-        showPopUp(listH);
+        try{
+            hist = getIntent().getExtras().getParcelable("atual");
+            listH.add(hist);
+
+
+        }catch (Exception ex){}
+
+
+
+
+
+
+
 
 
 
@@ -192,12 +205,6 @@ public class actMainMenu extends AppCompatActivity
 
 
 
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).setValue(listH);
     }
 
 
