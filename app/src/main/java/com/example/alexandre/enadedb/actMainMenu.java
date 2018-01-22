@@ -94,8 +94,11 @@ public class actMainMenu extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).setValue(listH);
-        listH = new ArrayList<>();
+        if (listH.size()!=0){
+            FirebaseDatabase.getInstance().getReference("historico").child(mUser.getUid()).setValue(listH);
+            listH = new ArrayList<>();
+        }
+
     }
 
     @Override

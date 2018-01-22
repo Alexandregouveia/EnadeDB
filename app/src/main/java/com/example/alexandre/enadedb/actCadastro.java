@@ -133,8 +133,8 @@ public class actCadastro extends AppCompatActivity implements Validator.Validati
             ImpEmail.setFocusable(false);
             Cadastrar.setText(R.string.btupdate);
             Cadastrar.setOnClickListener(AtualizarDados);
-            ImpPass.setFocusable(false);
-            ImpConfPass.setFocusable(false);
+            ImpPass.setVisibility(View.INVISIBLE);
+            ImpConfPass.setVisibility(View.INVISIBLE);
 
             mAuth = FirebaseAuth.getInstance();
             mUser = mAuth.getCurrentUser();
