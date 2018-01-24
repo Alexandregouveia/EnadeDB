@@ -144,22 +144,6 @@ public class actQuestao extends AppCompatActivity {
 
     }
 
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onBackPressed() {
-//       super.onBackPressed();
-        Intent mainScreen = new Intent(actQuestao.this,actMainMenu.class);
-        startActivity(mainScreen);
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent Data){
         super.onActivityResult(requestCode,resultCode, Data);
@@ -194,15 +178,15 @@ public class actQuestao extends AppCompatActivity {
         }
 
     }
+
     public void Proxima(int indice, boolean last){
         scQuestion.fullScroll(0);
-        btAlternativa.setText(getResources().getText(R.string.btAlternativas));
+
+
         mText.setText(listaQuestoes.get(indice).getText().replace("\\n", System.getProperty("line.separator"))
                 .replace("\n", System.getProperty("line.separator"))
                 .replace("\\t","\t"));
         if (listaQuestoes.get(indice).getImage()!=null){
-
-
             FirebaseStorage.getInstance().getReference(listaQuestoes.get(indice).getImage()).getFile(img)
                     .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
@@ -215,9 +199,47 @@ public class actQuestao extends AppCompatActivity {
         }else{
             mImage.setVisibility(View.INVISIBLE);
         }
+
         if (last==true){
             btProxima.setOnClickListener(CallEnd);
+        }else{
+            btProxima.setOnClickListener(CallNext);
         }
+
+
+        switch (listaRespostas.get(i)){
+            case "A":
+                letra = "A";
+                btAlternativa.setText(listaQuestoes.get(i).getA0());
+                listaRespostas.set(i,"A");
+                break;
+            case "B":
+                letra = "B";
+                btAlternativa.setText(listaQuestoes.get(i).getA1());
+                listaRespostas.set(i,"B");
+                break;
+            case "C":
+                letra = "C";
+                btAlternativa.setText(listaQuestoes.get(i).getA2());
+                listaRespostas.set(i,"C");
+                break;
+
+            case "D":
+                letra = "D";
+                btAlternativa.setText(listaQuestoes.get(i).getA3());
+                listaRespostas.set(i,"D");
+                break;
+
+            case "E":
+                letra = "E";
+                btAlternativa.setText(listaQuestoes.get(i).getA4());
+                listaRespostas.set(i,"E");
+                break;
+            default:
+                btAlternativa.setText(getResources().getText(R.string.btAlternativas));
+                break;
+        }
+
     }
 
 
@@ -286,8 +308,6 @@ public class actQuestao extends AppCompatActivity {
         intentScore.putStringArrayListExtra("acertos",result);
         startActivity(intentScore);
     };
-
-
 
     View.OnClickListener CallMenu = view -> {
         Intent Main = new Intent(actQuestao.this,actMainMenu.class);
